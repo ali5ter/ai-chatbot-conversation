@@ -1,0 +1,58 @@
+from chatbot_conversation import (
+    ChatbotConversation,
+    OpenAIProvider,
+    AnthropicProvider,
+    OllamaProvider
+)
+
+def main():
+    # Choose your provider(s):
+    
+    # Option 1: OpenAI (both chatbots)
+    provider1 = OpenAIProvider(model="gpt-4o-mini")
+    provider2 = OpenAIProvider(model="gpt-4o-mini")
+    
+    # Option 2: Anthropic Claude (both chatbots)
+    # provider1 = AnthropicProvider(model="claude-sonnet-4-20250514")
+    # provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
+    
+    # Option 3: Mix providers (e.g., OpenAI vs Claude)
+    # provider1 = OpenAIProvider(model="gpt-4o-mini")
+    # provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
+    
+    # Option 4: Local models with Ollama
+    # provider1 = OllamaProvider(model="llama2")
+    # provider2 = OllamaProvider(model="mistral")
+    
+    # Initialize the conversation system
+    conv = ChatbotConversation(provider1, provider2)
+    
+    # Define system prompts for each chatbot
+    chatbot1_system = """You are an AI policy expert with a focus on practical implementation. 
+    You think about concrete tools, specific policy language, and real-world applications. 
+    You like to provide detailed examples and actionable recommendations."""
+    
+    chatbot2_system = """You are an AI ethics and detection researcher who thinks critically 
+    about AI detection methods and their limitations. You enjoy exploring edge cases, 
+    potential issues, and philosophical implications while also being practical."""
+    
+    # The initial prompt
+    initial_prompt = """If you were able to detect if some text was AI generated, what ways 
+    would you do this and how might this provide the basis for some AI usage policy that a 
+    non-profit might use? Brainstorm specific tools readily available to employees to use and 
+    specific content to include in a policy... discuss."""
+    
+    # Run the conversation for 3 turns (6 total messages)
+    conversation = conv.run_conversation(
+        initial_prompt=initial_prompt,
+        chatbot1_system=chatbot1_system,
+        chatbot2_system=chatbot2_system,
+        num_turns=3,
+        delay=1
+    )
+    
+    # Save the conversation
+    conv.save_conversation("ai_policy_discussion.txt")
+
+if __name__ == "__main__":
+    main()
