@@ -23,10 +23,88 @@ cd ai-chatbot-conversation
 pip install -r requirements.txt
 ```
 
-3. Set up API keys (choose based on your provider):
+3. Get your API keys (see [Getting API Keys](#getting-api-keys) section below)
+
+4. Set up API keys as environment variables:
 ```bash
 export OPENAI_API_KEY='your-openai-key'
 export ANTHROPIC_API_KEY='your-anthropic-key'
+```
+
+Or create a `.env` file in the project root:
+```
+OPENAI_API_KEY=your-openai-key
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+## Getting API Keys
+
+### OpenAI API Key
+
+1. **Create an OpenAI Account**
+   - Go to https://platform.openai.com/signup
+   - Sign up with your email or Google/Microsoft account
+
+2. **Add Payment Method**
+   - Navigate to https://platform.openai.com/account/billing/overview
+   - Click "Add payment method"
+   - Add a credit/debit card (OpenAI uses pay-as-you-go pricing)
+   - Consider setting up usage limits at https://platform.openai.com/account/limits
+
+3. **Generate API Key**
+   - Go to https://platform.openai.com/api-keys
+   - Click "Create new secret key"
+   - Give it a name (e.g., "chatbot-conversation")
+   - **Important**: Copy the key immediately - you won't be able to see it again!
+   - Store it securely (never commit it to Git)
+
+4. **Pricing** (as of 2025)
+   - GPT-4o-mini: ~$0.15 per 1M input tokens, ~$0.60 per 1M output tokens
+   - GPT-4o: ~$2.50 per 1M input tokens, ~$10 per 1M output tokens
+   - Check current pricing: https://openai.com/api/pricing/
+
+### Anthropic Claude API Key
+
+1. **Create an Anthropic Account**
+   - Go to https://console.anthropic.com/
+   - Click "Sign Up" and create an account with your email
+
+2. **Add Credits**
+   - Navigate to https://console.anthropic.com/settings/billing
+   - Click "Add credits" or "Add payment method"
+   - Purchase credits (minimum $5) or set up auto-recharge
+   - Anthropic uses a prepaid credit system
+
+3. **Generate API Key**
+   - Go to https://console.anthropic.com/settings/keys
+   - Click "Create Key"
+   - Give it a name (e.g., "chatbot-conversation")
+   - **Important**: Copy the key immediately - it won't be shown again!
+   - Store it securely
+
+4. **Pricing** (as of 2025)
+   - Claude Sonnet 4: ~$3 per 1M input tokens, ~$15 per 1M output tokens
+   - Claude Opus 4: ~$15 per 1M input tokens, ~$75 per 1M output tokens
+   - Check current pricing: https://www.anthropic.com/pricing
+
+### Security Best Practices
+
+⚠️ **Never commit API keys to Git!**
+
+- Use environment variables or a `.env` file (which is in `.gitignore`)
+- Rotate keys periodically
+- Set up usage limits/budgets on both platforms
+- Use separate keys for development and production
+- Consider using tools like `python-dotenv` for managing environment variables:
+
+```bash
+pip install python-dotenv
+```
+
+Then in your Python script:
+```python
+from dotenv import load_dotenv
+load_dotenv()  # This loads variables from .env file
 ```
 
 ## Quick Start
