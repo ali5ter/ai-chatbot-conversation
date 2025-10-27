@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# @file: chatbot_conversation.py
+# @brief: Handle conversations with different chatbot providers
+# @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
+
 import os
 import time
 from abc import ABC, abstractmethod

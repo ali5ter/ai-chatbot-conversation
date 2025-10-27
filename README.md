@@ -1,4 +1,4 @@
-# AI Chatbot Conversation
+# 🤖 AI Chatbot Conversation
 
 A Python framework for enabling conversations between two AI chatbots. Supports multiple AI providers including OpenAI, Anthropic Claude, and local models via Ollama.
 
@@ -12,27 +12,31 @@ A Python framework for enabling conversations between two AI chatbots. Supports 
 
 ## Installation
 
-1. Clone this repository:
+1.Clone this repository:
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/ai-chatbot-conversation.git
 cd ai-chatbot-conversation
 ```
 
-2. Install dependencies:
+2.Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Get your API keys (see [Getting API Keys](#getting-api-keys) section below)
+3.Get your API keys (see [Getting API Keys](#getting-api-keys) section below)
 
-4. Set up API keys as environment variables:
+4.Set up API keys as environment variables:
+
 ```bash
 export OPENAI_API_KEY='your-openai-key'
 export ANTHROPIC_API_KEY='your-anthropic-key'
 ```
 
 Or create a `.env` file in the project root:
-```
+
+```bash
 OPENAI_API_KEY=your-openai-key
 ANTHROPIC_API_KEY=your-anthropic-key
 ```
@@ -42,17 +46,17 @@ ANTHROPIC_API_KEY=your-anthropic-key
 ### OpenAI API Key
 
 1. **Create an OpenAI Account**
-   - Go to https://platform.openai.com/signup
+   - Go to the [OpenAI website](https://platform.openai.com/signup)
    - Sign up with your email or Google/Microsoft account
 
 2. **Add Payment Method**
-   - Navigate to https://platform.openai.com/account/billing/overview
+   - Navigate to the [billing page](https://platform.openai.com/account/billing/overview)
    - Click "Add payment method"
    - Add a credit/debit card (OpenAI uses pay-as-you-go pricing)
-   - Consider setting up usage limits at https://platform.openai.com/account/limits
+   - Consider [setting up usage limits](https://platform.openai.com/account/limits)
 
 3. **Generate API Key**
-   - Go to https://platform.openai.com/api-keys
+   - Go to the [API keys page](https://platform.openai.com/api-keys)
    - Click "Create new secret key"
    - Give it a name (e.g., "chatbot-conversation")
    - **Important**: Copy the key immediately - you won't be able to see it again!
@@ -61,22 +65,22 @@ ANTHROPIC_API_KEY=your-anthropic-key
 4. **Pricing** (as of 2025)
    - GPT-4o-mini: ~$0.15 per 1M input tokens, ~$0.60 per 1M output tokens
    - GPT-4o: ~$2.50 per 1M input tokens, ~$10 per 1M output tokens
-   - Check current pricing: https://openai.com/api/pricing/
+   - Check [current pricing](https://openai.com/api/pricing/)
 
 ### Anthropic Claude API Key
 
 1. **Create an Anthropic Account**
-   - Go to https://console.anthropic.com/
+   - Go to the [Athropic website](https://console.anthropic.com/)
    - Click "Sign Up" and create an account with your email
 
 2. **Add Credits**
-   - Navigate to https://console.anthropic.com/settings/billing
+   - Navigate to the [billing page](https://console.anthropic.com/settings/billing)
    - Click "Add credits" or "Add payment method"
    - Purchase credits (minimum $5) or set up auto-recharge
    - Anthropic uses a prepaid credit system
 
 3. **Generate API Key**
-   - Go to https://console.anthropic.com/settings/keys
+   - Go to the [API keys page](https://console.anthropic.com/settings/keys)
    - Click "Create Key"
    - Give it a name (e.g., "chatbot-conversation")
    - **Important**: Copy the key immediately - it won't be shown again!
@@ -85,7 +89,7 @@ ANTHROPIC_API_KEY=your-anthropic-key
 4. **Pricing** (as of 2025)
    - Claude Sonnet 4: ~$3 per 1M input tokens, ~$15 per 1M output tokens
    - Claude Opus 4: ~$15 per 1M input tokens, ~$75 per 1M output tokens
-   - Check current pricing: https://www.anthropic.com/pricing
+   - Check the [current pricing](https://www.anthropic.com/pricing)
 
 ### Security Best Practices
 
@@ -102,6 +106,7 @@ pip install python-dotenv
 ```
 
 Then in your Python script:
+
 ```python
 from dotenv import load_dotenv
 load_dotenv()  # This loads variables from .env file
@@ -140,18 +145,21 @@ conv.save_conversation("my_conversation.txt")
 ## Supported Providers
 
 ### OpenAI
+
 ```python
 from chatbot_conversation import OpenAIProvider
 provider = OpenAIProvider(model="gpt-4o-mini")
 ```
 
 ### Anthropic Claude
+
 ```python
 from chatbot_conversation import AnthropicProvider
 provider = AnthropicProvider(model="claude-sonnet-4-20250514")
 ```
 
 ### Ollama (Local Models)
+
 ```python
 from chatbot_conversation import OllamaProvider
 provider = OllamaProvider(model="llama2")
@@ -160,8 +168,9 @@ provider = OllamaProvider(model="llama2")
 ## Examples
 
 See the `examples/` directory for more use cases:
+
 - `basic_conversation.py` - Simple two-chatbot conversation
-- More examples coming soon!
+- More examples coming (maybe)
 
 ## Configuration
 
@@ -192,6 +201,7 @@ MIT License - see LICENSE file for details
 ## Acknowledgments
 
 Built with support from:
+
 - OpenAI API
 - Anthropic Claude API
 - Ollama for local model support

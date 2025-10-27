@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# @file: basic_conversation.py
+# @brief: Example usage of the chatbot conversation system
+# @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
+
 from chatbot_conversation import (
     ChatbotConversation,
     OpenAIProvider,
