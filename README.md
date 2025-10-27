@@ -169,8 +169,32 @@ provider = OllamaProvider(model="llama2")
 
 See the `examples/` directory for more use cases:
 
-- `basic_conversation.py` - Simple two-chatbot conversation
-- More examples coming (maybe)
+### Basic Usage
+
+- **`basic_conversation.py`** - Simple AI policy discussion (original example)
+
+### Debates & Arguments
+
+- **`climate_policy_debate.py`** - Climate scientist vs economist debating aggressive climate action vs economic priorities
+- **`free_will_debate.py`** - Libertarian free will vs hard determinism philosophical debate
+
+### Creative & Collaborative
+
+- **`story_cowriting.py`** - Two writers collaboratively building a mystery thriller with alternating plot twists and character development
+
+### Educational & Exploratory
+
+- **`time_period_dialogue.py`** - Victorian-era person encountering modern social norms and values
+- **`therapy_session.py`** - Simulated therapy session exploring career transition anxiety (educational demonstration only)
+
+Run any example:
+
+```bash
+python examples/climate_policy_debate.py
+python examples/story_cowriting.py
+```
+
+Each example demonstrates different conversation styles and can be customized for your needs.
 
 ## Configuration
 
