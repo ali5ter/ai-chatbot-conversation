@@ -17,9 +17,22 @@ class ChatProvider(ABC):
 # OpenAI Provider
 class OpenAIProvider(ChatProvider):
     def __init__(self, api_key=None, model="gpt-4o-mini"):
-        from openai import OpenAI
-        self.client = OpenAI(api_key=api_key or os.getenv("OPENAI_API_KEY"))
+        try:
+            from openai import OpenAI
+        except ImportError:
+            raise ImportError("OpenAI package not installed. Run: pip install openai")
+        
+        # Get API key from parameter, environment variable, or raise error
+        self.api_key = api_key or os.environ.get("OPENAI_API_KEY")
+        if not self.api_key:
+            raise ValueError(
+                "OpenAI API key not found. Set OPENAI_API_KEY environment variable or pass api_key parameter.\n"
+                "Get your API key at: https://platform.openai.com/api-keys"
+            )
+        
+        self.client = OpenAI(api_key=self.api_key)
         self.model = model
+        print(f"OpenAI Provider initialized with model: {model}")
     
     def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
         full_messages = [{"role": "system", "content": system_prompt}] + messages
@@ -34,9 +47,22 @@ class OpenAIProvider(ChatProvider):
 # Anthropic Claude Provider
 class AnthropicProvider(ChatProvider):
     def __init__(self, api_key=None, model="claude-sonnet-4-20250514"):
-        import anthropic
-        self.client = anthropic.Anthropic(api_key=api_key or os.getenv("ANTHROPIC_API_KEY"))
+        try:
+            import anthropic
+        except ImportError:
+            raise ImportError("Anthropic package not installed. Run: pip install anthropic")
+        
+        # Get API key from parameter, environment variable, or raise error
+        self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
+        if not self.api_key:
+            raise ValueError(
+                "Anthropic API key not found. Set ANTHROPIC_API_KEY environment variable or pass api_key parameter.\n"
+                "Get your API key at: https://console.anthropic.com/settings/keys"
+            )
+        
+        self.client = anthropic.Anthropic(api_key=self.api_key)
         self.model = model
+        print(f"Anthropic Provider initialized with model: {model}")
     
     def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
         # Convert messages to Anthropic format
@@ -59,10 +85,15 @@ class AnthropicProvider(ChatProvider):
 # Ollama Provider (for local models)
 class OllamaProvider(ChatProvider):
     def __init__(self, model="llama2", base_url="http://localhost:11434"):
-        import requests
+        try:
+            import requests
+        except ImportError:
+            raise ImportError("Requests package not installed. Run: pip install requests")
+        
         self.model = model
         self.base_url = base_url
         self.session = requests.Session()
+        print(f"Ollama Provider initialized with model: {model}")
     
     def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
         import requests

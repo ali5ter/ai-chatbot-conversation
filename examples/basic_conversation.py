@@ -4,6 +4,13 @@
 # @brief: Example usage of the chatbot conversation system
 # @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
 
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from dotenv import load_dotenv
+load_dotenv()
+
 from chatbot_conversation import (
     ChatbotConversation,
     OpenAIProvider,
@@ -15,16 +22,16 @@ def main():
     # Choose your provider(s):
     
     # Option 1: OpenAI (both chatbots)
-    provider1 = OpenAIProvider(model="gpt-4o-mini")
-    provider2 = OpenAIProvider(model="gpt-4o-mini")
+    # provider1 = OpenAIProvider(model="gpt-4o-mini")
+    # provider2 = OpenAIProvider(model="gpt-4o-mini")
     
     # Option 2: Anthropic Claude (both chatbots)
     # provider1 = AnthropicProvider(model="claude-sonnet-4-20250514")
     # provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
     # Option 3: Mix providers (e.g., OpenAI vs Claude)
-    # provider1 = OpenAIProvider(model="gpt-4o-mini")
-    # provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
+    provider1 = OpenAIProvider(model="gpt-4o-mini")
+    provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
     # Option 4: Local models with Ollama
     # provider1 = OllamaProvider(model="llama2")

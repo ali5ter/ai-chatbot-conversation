@@ -4,11 +4,14 @@
 # @brief: Example usage of the chatbot conversation system
 # @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
 
-import sys
 import os
+import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from chatbot_conversation import ChatbotConversation, OpenAIProvider
+from dotenv import load_dotenv
+load_dotenv()
+
+from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
     print("=" * 80)
@@ -19,7 +22,7 @@ def main():
     print("=" * 80 + "\n")
     
     provider1 = OpenAIProvider(model="gpt-4o-mini")
-    provider2 = OpenAIProvider(model="gpt-4o-mini")
+    provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
     conv = ChatbotConversation(provider1, provider2)
     
