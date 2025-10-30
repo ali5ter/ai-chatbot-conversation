@@ -6,6 +6,7 @@
 
 import os
 import time
+from pathlib import Path
 from abc import ABC, abstractmethod
 
 # Base class for different API providers
@@ -234,13 +235,17 @@ class ChatbotConversation:
         
         self.conversation_history = conversation_log
         return conversation_log
-    
+
     def save_conversation(self, filename="conversation_log.txt"):
-        """Save the conversation to a text file."""
-        with open(filename, 'w', encoding='utf-8') as f:
+        """Save the conversation to a text file (filename can include a path)."""
+        path = Path(filename).expanduser().resolve()
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+        with path.open('w', encoding='utf-8') as f:
             for entry in self.conversation_history:
                 f.write(f"\n{'='*80}\n")
                 f.write(f"{entry['speaker']} - Turn {entry['turn']}\n")
                 f.write(f"{'='*80}\n")
                 f.write(f"{entry['message']}\n")
-        print(f"\nConversation saved to {filename}")
+
+        print(f"\nConversation saved to {path}")

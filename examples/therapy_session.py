@@ -59,9 +59,9 @@ def main():
         delay=1
     )
     
-    conv.save_conversation("therapy_session.txt")
+    conv.save_conversation("result/therapy_session.txt")
     print("\n" + "=" * 80)
-    print("Session saved to therapy_session.txt")
+    print("Session saved to result/therapy_session.txt")
     print("=" * 80)
 
 if __name__ == "__main__":

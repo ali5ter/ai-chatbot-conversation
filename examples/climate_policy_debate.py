@@ -56,9 +56,9 @@ def main():
         delay=1
     )
     
-    conv.save_conversation("climate_debate.txt")
+    conv.save_conversation("result/climate_debate.txt")
     print("\n" + "=" * 80)
-    print("Debate saved to climate_debate.txt")
+    print("Debate saved to result/climate_debate.txt")
 
 if __name__ == "__main__":
     main()

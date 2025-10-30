@@ -62,9 +62,9 @@ def main():
         delay=1
     )
     
-    conv.save_conversation("free_will_debate.txt")
+    conv.save_conversation("result/free_will_debate.txt")
     print("\n" + "=" * 80)
-    print("Debate saved to free_will_debate.txt")
+    print("Debate saved to result/free_will_debate.txt")
 
 if __name__ == "__main__":
     main()

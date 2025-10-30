@@ -67,9 +67,9 @@ def main():
         delay=1
     )
     
-    conv.save_conversation("time_period_dialogue.txt")
+    conv.save_conversation("result/time_period_dialogue.txt")
     print("\n" + "=" * 80)
-    print("Dialogue saved to time_period_dialogue.txt")
+    print("Dialogue saved to result/time_period_dialogue.txt")
 
 if __name__ == "__main__":
     main()

@@ -57,9 +57,9 @@ Continue the story, adding your signature style and a plot development."""
         delay=1
     )
     
-    conv.save_conversation("collaborative_story.txt")
+    conv.save_conversation("result/collaborative_story.txt")
     print("\n" + "=" * 80)
-    print("Story saved to collaborative_story.txt")
+    print("Story saved to result/collaborative_story.txt")
 
 if __name__ == "__main__":
     main()
