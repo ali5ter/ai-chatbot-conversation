@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @file: climate_policy_debate.py
 # @brief: Example usage of the chatbot conversation system
-# @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
+# @author: Anthropic Claude
 
 import os
 import sys
@@ -49,10 +49,13 @@ def main():
     
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_system=climate_activist,
-        chatbot2_system=economic_pragmatist,
+        chatbot1_role=climate_activist,
+        chatbot2_role=economic_pragmatist,
         num_turns=4,
-        delay=1
+        delay=1,
+        verbose=True,
+        chatbot1_name="Climate Activist",
+        chatbot2_name="Economic Pragmatist"
     )
     
     conv.save_conversation("result/climate_debate.txt")

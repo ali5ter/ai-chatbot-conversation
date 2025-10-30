@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @file: free_will_debate.py
 # @brief: Example usage of the chatbot conversation system
-# @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
+# @author: Anthropic Claude
 
 import os
 import sys
@@ -56,10 +56,13 @@ def main():
     
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_system=libertarian,
-        chatbot2_system=determinist,
+        chatbot1_role=libertarian,
+        chatbot2_role=determinist,
         num_turns=5,
-        delay=1
+        delay=1,
+        verbose=True,
+        chatbot1_name="Libertarian",
+        chatbot2_name="Determinist"
     )
     
     conv.save_conversation("result/free_will_debate.txt")

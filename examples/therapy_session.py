@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @file: therapy_session.py
 # @brief: Example usage of the chatbot conversation system
-# @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
+# @author: Anthropic Claude
 
 import os
 import sys
@@ -53,10 +53,13 @@ def main():
     
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_system=therapist,
-        chatbot2_system=client,
+        chatbot1_role=therapist,
+        chatbot2_role=client,
         num_turns=6,
-        delay=1
+        delay=1,
+        verbose=True,
+        chatbot1_name="Therapist",
+        chatbot2_name="Client"
     )
     
     conv.save_conversation("result/therapy_session.txt")

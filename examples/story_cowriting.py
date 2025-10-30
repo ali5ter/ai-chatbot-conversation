@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @file: story_cowriting.py
 # @brief: Example usage of the chatbot conversation system
-# @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
+# @author: Anthropic Claude
 
 import os
 import sys
@@ -51,10 +51,13 @@ Continue the story, adding your signature style and a plot development."""
     
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_system=writer1,
-        chatbot2_system=writer2,
+        chatbot1_role=writer1,
+        chatbot2_role=writer2,
         num_turns=5,
-        delay=1
+        delay=1,
+        verbose=True,
+        chatbot1_name="Writer 1",
+        chatbot2_name="Writer 2"
     )
     
     conv.save_conversation("result/collaborative_story.txt")

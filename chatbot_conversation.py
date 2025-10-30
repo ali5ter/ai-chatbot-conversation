@@ -151,18 +151,27 @@ class ChatbotConversation:
         except Exception as e:
             return f"Error getting response from {chatbot_name}: {str(e)}"
     
-    def run_conversation(self, initial_prompt, chatbot1_system, chatbot2_system, 
-                        num_turns=5, delay=1, verbose=True):
+    def run_conversation(self, 
+            initial_prompt,
+            chatbot1_role,
+            chatbot2_role, 
+            num_turns=5,
+            delay=1,
+            verbose=True,
+            chatbot1_name="Chatbot 1",
+            chatbot2_name="Chatbot 2"):
         """
         Run a conversation between two chatbots.
         
         Args:
             initial_prompt: The starting prompt for the conversation
-            chatbot1_system: System prompt for first chatbot
-            chatbot2_system: System prompt for second chatbot
+            chatbot1_role: Role for first chatbot
+            chatbot2_role: Role for second chatbot
             num_turns: Number of back-and-forth exchanges
             delay: Delay in seconds between API calls
             verbose: Print conversation to console
+            chatbot1_name: Name identifier for first chatbot
+            chatbot2_name: Name identifier for second chatbot
             
         Returns:
             List of conversation turns with metadata
@@ -180,7 +189,7 @@ class ChatbotConversation:
         messages.append({"role": "assistant", "content": initial_prompt})
         conversation_log.append({
             "turn": 0,
-            "speaker": "Chatbot 1 (Initial)",
+            "speaker": "{chatbot1_name} (Initial)",
             "message": initial_prompt
         })
         
@@ -189,7 +198,7 @@ class ChatbotConversation:
             time.sleep(delay)
             if verbose:
                 print(f"\n{'='*80}")
-                print(f"CHATBOT 2 - Turn {turn + 1}")
+                print(f"{chatbot2_name.upper()} - Turn {turn + 1}")
                 print(f"{'='*80}")
             
             # For chatbot 2, reverse the roles (assistant becomes user)
@@ -201,7 +210,7 @@ class ChatbotConversation:
                 })
             
             response2 = self.get_chatbot_response(
-                self.provider2, "Chatbot 2", chatbot2_system, reversed_messages
+                self.provider2, chatbot2_name, chatbot2_role, reversed_messages
             )
             if verbose:
                 print(response2)
@@ -209,7 +218,7 @@ class ChatbotConversation:
             messages.append({"role": "user", "content": response2})
             conversation_log.append({
                 "turn": turn + 1,
-                "speaker": "Chatbot 2",
+                "speaker": chatbot2_name,
                 "message": response2
             })
             
@@ -217,11 +226,12 @@ class ChatbotConversation:
             time.sleep(delay)
             if verbose:
                 print(f"\n{'='*80}")
-                print(f"CHATBOT 1 - Turn {turn + 1}")
+                print(f"{chatbot1_name.upper()} - Turn {turn + 1}")
                 print(f"{'='*80}")
             
             response1 = self.get_chatbot_response(
-                self.provider1, "Chatbot 1", chatbot1_system, messages
+                self.provider1, chatbot1_name, chatbot1_role
+, messages
             )
             if verbose:
                 print(response1)
@@ -229,7 +239,7 @@ class ChatbotConversation:
             messages.append({"role": "assistant", "content": response1})
             conversation_log.append({
                 "turn": turn + 1,
-                "speaker": "Chatbot 1",
+                "speaker": chatbot1_name,
                 "message": response1
             })
         

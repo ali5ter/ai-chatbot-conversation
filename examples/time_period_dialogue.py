@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @file: time_period_dialogue.py
 # @brief: Example usage of the chatbot conversation system
-# @author: Alister Lewis-Bowen <alister@lewis-bowen.org>
+# @author: Anthropic Claude
 
 import os
 import sys
@@ -61,10 +61,13 @@ def main():
     
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_system=victorian,
-        chatbot2_system=modern,
+        chatbot1_role=victorian,
+        chatbot2_role=modern,
         num_turns=5,
-        delay=1
+        delay=1,
+        verbose=True,
+        chatbot1_name="Victorian",
+        chatbot2_name="Modern"
     )
     
     conv.save_conversation("result/time_period_dialogue.txt")

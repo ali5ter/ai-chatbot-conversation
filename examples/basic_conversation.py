@@ -58,10 +58,13 @@ def main():
     # Run the conversation for 3 turns (6 total messages)
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_system=policy_expert,
-        chatbot2_system=ethics_researcher,
+        chatbot1_role=policy_expert,
+        chatbot2_role=ethics_researcher,
         num_turns=3,
-        delay=1
+        delay=1,
+        verbose=True,
+        chatbot1_name="Policy Expert",
+        chatbot2_name="Ethics Researcher"
     )
     
     # Save the conversation
