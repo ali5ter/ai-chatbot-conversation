@@ -24,7 +24,6 @@ def main():
     
     conv = ChatbotConversation(provider1, provider2)
     
-    # Define personas
     climate_activist = """You are a climate scientist and environmental activist who advocates 
     for aggressive, immediate climate action. You emphasize:
     - The urgency of the climate crisis and scientific consensus

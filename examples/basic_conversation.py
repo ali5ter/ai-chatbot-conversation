@@ -40,12 +40,12 @@ def main():
     # Initialize the conversation system
     conv = ChatbotConversation(provider1, provider2)
     
-    # Define system prompts for each chatbot
-    chatbot1_system = """You are an AI policy expert with a focus on practical implementation. 
+    # Define roles and personalities for the chatbots
+    policy_expert = """You are an AI policy expert with a focus on practical implementation. 
     You think about concrete tools, specific policy language, and real-world applications. 
     You like to provide detailed examples and actionable recommendations."""
     
-    chatbot2_system = """You are an AI ethics and detection researcher who thinks critically 
+    ethics_researcher = """You are an AI ethics and detection researcher who thinks critically 
     about AI detection methods and their limitations. You enjoy exploring edge cases, 
     potential issues, and philosophical implications while also being practical."""
     
@@ -58,8 +58,8 @@ def main():
     # Run the conversation for 3 turns (6 total messages)
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_system=chatbot1_system,
-        chatbot2_system=chatbot2_system,
+        chatbot1_system=policy_expert,
+        chatbot2_system=ethics_researcher,
         num_turns=3,
         delay=1
     )
