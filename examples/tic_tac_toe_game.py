@@ -14,12 +14,8 @@ load_dotenv()
 from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
-    print("=" * 80)
-    print("TIC-TAC-TOE: AI vs AI")
-    print("=" * 80)
-    print("Two AI chatbots play a game of tic-tac-toe (noughts and crosses)")
-    print("=" * 80 + "\n")
-    
+    print("\nTIC-TAC-TOE: AI vs AI\n\n")
+
     # Use same or different providers
     # provider1 = OpenAIProvider(model="gpt-4o-mini")
     # provider2 = OpenAIProvider(model="gpt-4o-mini")
@@ -129,24 +125,16 @@ I'm taking the center - it's the strongest opening position! Your turn, O."""
         initial_prompt=initial_prompt,
         chatbot1_role=player_x,
         chatbot2_role=player_o,
+        chatbot1_name="Player X",
+        chatbot2_name="Player O",
+        chatbot1_emoji="❌",
+        chatbot2_emoji="⭕",
         num_turns=4,  # Up to 9 moves total (4 turns = 8 moves + initial move = 9)
         delay=1,
-        verbose=True,
-        chatbot1_name="Player X",
-        chatbot2_name="Player O"
+        verbose=True
     )
     
     conv.save_conversation("results/tic_tac_toe_game.txt")
-    
-    print("\n" + "=" * 80)
-    print("Game saved to results/tic_tac_toe_game.txt")
-    print("=" * 80)
-    print("\nGame Analysis:")
-    print("• Watch how the AIs develop strategy")
-    print("• See if they properly block winning moves")
-    print("• Check if they make logical tactical decisions")
-    print("• Notice any mistakes or clever plays")
-    print("=" * 80)
 
 if __name__ == "__main__":
     main()

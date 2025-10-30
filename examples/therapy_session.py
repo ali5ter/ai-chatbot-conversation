@@ -14,13 +14,11 @@ load_dotenv()
 from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
-    print("=" * 80)
-    print("THERAPY/COACHING SESSION: Career Transition Anxiety")
-    print("=" * 80)
+    print("\nTHERAPY/COACHING SESSION: Career Transition Anxiety\n\n")
     print("Note: This is a simulated example for demonstration purposes only.")
     print("Not a substitute for real mental health support.")
-    print("=" * 80 + "\n")
-    
+    print()
+
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
@@ -55,17 +53,16 @@ def main():
         initial_prompt=initial_prompt,
         chatbot1_role=therapist,
         chatbot2_role=client,
+        chatbot1_name="Therapist",
+        chatbot2_name="Client",
+        chatbot1_emoji="🧑‍⚕️",
+        chatbot2_emoji="🧑‍💼",
         num_turns=6,
         delay=1,
-        verbose=True,
-        chatbot1_name="Therapist",
-        chatbot2_name="Client"
+        verbose=True
     )
     
     conv.save_conversation("result/therapy_session.txt")
-    print("\n" + "=" * 80)
-    print("Session saved to result/therapy_session.txt")
-    print("=" * 80)
 
 if __name__ == "__main__":
     main()

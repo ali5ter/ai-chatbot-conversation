@@ -14,9 +14,7 @@ load_dotenv()
 from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
-    print("=" * 80)
-    print("COLLABORATIVE STORY WRITING: Mystery Thriller")
-    print("=" * 80)
+    print("\nCOLLABORATIVE STORY WRITING: Mystery Thriller\n\n")
     
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
@@ -53,16 +51,16 @@ Continue the story, adding your signature style and a plot development."""
         initial_prompt=initial_prompt,
         chatbot1_role=writer1,
         chatbot2_role=writer2,
+        chatbot1_name="Writer 1",
+        chatbot2_name="Writer 2",
+        chatbot1_emoji="✍️",
+        chatbot2_emoji="🖋️",
         num_turns=5,
         delay=1,
-        verbose=True,
-        chatbot1_name="Writer 1",
-        chatbot2_name="Writer 2"
+        verbose=True
     )
-    
+
     conv.save_conversation("result/collaborative_story.txt")
-    print("\n" + "=" * 80)
-    print("Story saved to result/collaborative_story.txt")
 
 if __name__ == "__main__":
     main()

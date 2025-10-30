@@ -14,9 +14,7 @@ load_dotenv()
 from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
-    print("=" * 80)
-    print("CLIMATE POLICY DEBATE: Aggressive Action vs Economic Priorities")
-    print("=" * 80)
+    print("\nCLIMATE POLICY DEBATE: Aggressive Action vs Economic Priorities\n\n")
     
     # Set up providers
     provider1 = OpenAIProvider(model="gpt-4o-mini")
@@ -51,16 +49,16 @@ def main():
         initial_prompt=initial_prompt,
         chatbot1_role=climate_activist,
         chatbot2_role=economic_pragmatist,
+        chatbot1_name="Climate Activist",
+        chatbot2_name="Economic Pragmatist",
+        chatbot1_emoji="🌍",
+        chatbot2_emoji="💼",
         num_turns=4,
         delay=1,
-        verbose=True,
-        chatbot1_name="Climate Activist",
-        chatbot2_name="Economic Pragmatist"
+        verbose=True
     )
     
     conv.save_conversation("result/climate_debate.txt")
-    print("\n" + "=" * 80)
-    print("Debate saved to result/climate_debate.txt")
 
 if __name__ == "__main__":
     main()

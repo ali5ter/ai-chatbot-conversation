@@ -14,9 +14,7 @@ load_dotenv()
 from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
-    print("=" * 80)
-    print("PHILOSOPHICAL DEBATE: Free Will vs Determinism")
-    print("=" * 80)
+    print("\nPHILOSOPHICAL DEBATE: Free Will vs Determinism\n\n")
     
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
@@ -58,16 +56,16 @@ def main():
         initial_prompt=initial_prompt,
         chatbot1_role=libertarian,
         chatbot2_role=determinist,
+        chatbot1_name="Libertarian",
+        chatbot2_name="Determinist",
+        chatbot1_emoji="🗽",
+        chatbot2_emoji="🔒",
         num_turns=5,
         delay=1,
-        verbose=True,
-        chatbot1_name="Libertarian",
-        chatbot2_name="Determinist"
+        verbose=True
     )
     
     conv.save_conversation("result/free_will_debate.txt")
-    print("\n" + "=" * 80)
-    print("Debate saved to result/free_will_debate.txt")
 
 if __name__ == "__main__":
     main()

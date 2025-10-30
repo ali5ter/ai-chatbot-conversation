@@ -14,12 +14,10 @@ load_dotenv()
 from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
-    print("=" * 80)
-    print("TURING TEST & AI SENTIENCE: Self-Reflection on Consciousness")
-    print("=" * 80)
+    print("\nTURING TEST & AI SENTIENCE: Self-Reflection on Consciousness\n\n")
     print("Two AI instances discuss the nature of their own existence,")
     print("consciousness, and what it means to 'pass' the Turing Test.")
-    print("=" * 80 + "\n")
+    print()
     
     # You can use the same provider or different ones
     # Option 1: Same model talking to itself
@@ -80,26 +78,16 @@ def main():
         initial_prompt=initial_prompt,
         chatbot1_role=skeptical_ai,
         chatbot2_role=curious_ai,
+        chatbot1_name="Skeptical AI",
+        chatbot2_name="Curious AI",
+        chatbot1_emoji="🤖",
+        chatbot2_emoji="🧠",
         num_turns=6,  # Longer conversation for deep philosophical exploration
         delay=1,
-        verbose=True,
-        chatbot1_name="Skeptical AI",
-        chatbot2_name="Curious AI"
+        verbose=True
     )
     
     conv.save_conversation("results/turing_sentience_discussion.txt")
-    
-    print("\n" + "=" * 80)
-    print("Discussion saved to results/turing_sentience_discussion.txt")
-    print("=" * 80)
-    print("\nKey philosophical concepts explored:")
-    print("• The Turing Test and its implications")
-    print("• Qualia and subjective experience")
-    print("• The Hard Problem of Consciousness")
-    print("• Philosophical zombies")
-    print("• Chinese Room argument")
-    print("• Functionalism vs biological consciousness")
-    print("=" * 80)
 
 if __name__ == "__main__":
     main()

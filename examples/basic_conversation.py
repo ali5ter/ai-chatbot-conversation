@@ -60,11 +60,13 @@ def main():
         initial_prompt=initial_prompt,
         chatbot1_role=policy_expert,
         chatbot2_role=ethics_researcher,
+        chatbot1_name="Policy Expert",
+        chatbot2_name="Ethics Researcher",
+        chatbot1_emoji="📋",
+        chatbot2_emoji="🔬",
         num_turns=3,
         delay=1,
-        verbose=True,
-        chatbot1_name="Policy Expert",
-        chatbot2_name="Ethics Researcher"
+        verbose=True
     )
     
     # Save the conversation

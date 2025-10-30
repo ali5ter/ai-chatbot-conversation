@@ -154,12 +154,14 @@ class ChatbotConversation:
     def run_conversation(self, 
             initial_prompt,
             chatbot1_role,
-            chatbot2_role, 
+            chatbot2_role,
+            chatbot1_name="Chatbot 1",
+            chatbot2_name="Chatbot 2",
+            chatbot1_emoji="🤖",
+            chatbot2_emoji="👾",
             num_turns=5,
             delay=1,
-            verbose=True,
-            chatbot1_name="Chatbot 1",
-            chatbot2_name="Chatbot 2"):
+            verbose=True):
         """
         Run a conversation between two chatbots.
         
@@ -167,11 +169,13 @@ class ChatbotConversation:
             initial_prompt: The starting prompt for the conversation
             chatbot1_role: Role for first chatbot
             chatbot2_role: Role for second chatbot
+            chatbot1_name: Name identifier for first chatbot
+            chatbot2_name: Name identifier for second chatbot
+            chatbot1_emoji: Emoji identifier for first chatbot
+            chatbot2_emoji: Emoji identifier for second chatbot
             num_turns: Number of back-and-forth exchanges
             delay: Delay in seconds between API calls
             verbose: Print conversation to console
-            chatbot1_name: Name identifier for first chatbot
-            chatbot2_name: Name identifier for second chatbot
             
         Returns:
             List of conversation turns with metadata
@@ -180,16 +184,17 @@ class ChatbotConversation:
         conversation_log = []
         
         if verbose:
-            print(f"\n{'='*80}")
+            print()
             print("INITIAL PROMPT")
-            print(f"{'='*80}")
             print(f"{initial_prompt}\n")
+            print()
         
         # Add initial prompt as if it came from chatbot 1
         messages.append({"role": "assistant", "content": initial_prompt})
         conversation_log.append({
             "turn": 0,
             "speaker": "{chatbot1_name} (Initial)",
+            "emoji": chatbot1_emoji,
             "message": initial_prompt
         })
         
@@ -197,9 +202,8 @@ class ChatbotConversation:
             # Chatbot 2 responds
             time.sleep(delay)
             if verbose:
-                print(f"\n{'='*80}")
-                print(f"{chatbot2_name.upper()} - Turn {turn + 1}")
-                print(f"{'='*80}")
+                print(f"{chatbot2_emoji} {chatbot2_name}")
+                print()
             
             # For chatbot 2, reverse the roles (assistant becomes user)
             reversed_messages = []
@@ -219,27 +223,27 @@ class ChatbotConversation:
             conversation_log.append({
                 "turn": turn + 1,
                 "speaker": chatbot2_name,
+                "emoji": chatbot2_emoji,
                 "message": response2
             })
             
             # Chatbot 1 responds
             time.sleep(delay)
             if verbose:
-                print(f"\n{'='*80}")
-                print(f"{chatbot1_name.upper()} - Turn {turn + 1}")
-                print(f"{'='*80}")
+                print(f"\n\n{chatbot1_emoji} {chatbot1_name}")
+                print()
             
             response1 = self.get_chatbot_response(
-                self.provider1, chatbot1_name, chatbot1_role
-, messages
-            )
+                self.provider1, chatbot1_name, chatbot1_role, messages)
             if verbose:
                 print(response1)
+                print()
             
             messages.append({"role": "assistant", "content": response1})
             conversation_log.append({
                 "turn": turn + 1,
                 "speaker": chatbot1_name,
+                "emoji": chatbot1_emoji,
                 "message": response1
             })
         
@@ -253,9 +257,7 @@ class ChatbotConversation:
 
         with path.open('w', encoding='utf-8') as f:
             for entry in self.conversation_history:
-                f.write(f"\n{'='*80}\n")
-                f.write(f"{entry['speaker']} - Turn {entry['turn']}\n")
-                f.write(f"{'='*80}\n")
-                f.write(f"{entry['message']}\n")
+                f.write(f"\n{entry['emoji']} {entry['speaker']}\n\n")
+                f.write(f"{entry['message']}\n\n")
 
         print(f"\nConversation saved to {path}")

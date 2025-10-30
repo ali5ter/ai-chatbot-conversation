@@ -14,9 +14,7 @@ load_dotenv()
 from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
 
 def main():
-    print("=" * 80)
-    print("TIME PERIOD DIALOGUE: Victorian Era meets Modern Day")
-    print("=" * 80)
+    print("\nTIME PERIOD DIALOGUE: Victorian Era meets Modern Day\n\n")
     
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
@@ -63,16 +61,16 @@ def main():
         initial_prompt=initial_prompt,
         chatbot1_role=victorian,
         chatbot2_role=modern,
+        chatbot1_name="Victorian",
+        chatbot2_name="Modern",
+        chatbot1_emoji="🎩",
+        chatbot2_emoji="🧑‍🎤",
         num_turns=5,
         delay=1,
-        verbose=True,
-        chatbot1_name="Victorian",
-        chatbot2_name="Modern"
+        verbose=True
     )
     
     conv.save_conversation("result/time_period_dialogue.txt")
-    print("\n" + "=" * 80)
-    print("Dialogue saved to result/time_period_dialogue.txt")
 
 if __name__ == "__main__":
     main()
