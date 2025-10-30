@@ -124,17 +124,17 @@ provider2 = OpenAIProvider(model="gpt-4o-mini")
 # Initialize conversation
 conv = ChatbotConversation(provider1, provider2)
 
-# Define personalities
-chatbot1_system = "You are a practical AI policy expert."
-chatbot2_system = "You are an AI ethics researcher."
+# Define roles
+chatbot1_role = "You are a practical AI policy expert."
+chatbot2_role = "You are an AI ethics researcher."
 
 # Start conversation
 initial_prompt = "Let's discuss AI safety in education."
 
 conversation = conv.run_conversation(
     initial_prompt=initial_prompt,
-    chatbot1_system=chatbot1_system,
-    chatbot2_system=chatbot2_system,
+    chatbot1_role=chatbot1_system,
+    chatbot2_role=chatbot2_system,
     num_turns=3
 )
 
@@ -187,6 +187,8 @@ See the `examples/` directory for more use cases:
 - **`time_period_dialogue.py`** - Victorian-era person encountering modern social norms and values
 - **`therapy_session.py`** - Simulated therapy session exploring career transition anxiety (educational demonstration only)
 
+Other examples may be added.
+
 Run any example:
 
 ```bash
@@ -201,7 +203,9 @@ Each example demonstrates different conversation styles and can be customized fo
 Customize conversations with these parameters:
 
 - `initial_prompt`: Starting message for the conversation
-- `chatbot1_system` / `chatbot2_system`: System prompts defining chatbot personalities
+- `chatbot1_role` / `chatbot2_role`: Role descriptions defining chatbot personalities
+- `chatbot1_name` / `chatbot2_name`: Short name for each chatbot
+- `chatbot1_emoji` / `chatbot2_emoji`: An icon for each chatbot
 - `num_turns`: Number of back-and-forth exchanges
 - `delay`: Seconds between API calls (to avoid rate limits)
 - `verbose`: Whether to print conversation to console
