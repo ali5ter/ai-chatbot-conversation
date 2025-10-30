@@ -65,7 +65,7 @@ def main():
         verbose=True
     )
     
-    conv.save_conversation("result/free_will_debate.txt")
+    conv.save_conversation("results/free_will_debate.txt")
 
 if __name__ == "__main__":
     main()

@@ -70,7 +70,7 @@ def main():
     )
     
     # Save the conversation
-    conv.save_conversation("result/ai_policy_discussion.txt")
+    conv.save_conversation("results/ai_policy_discussion.txt")
 
 if __name__ == "__main__":
     main()

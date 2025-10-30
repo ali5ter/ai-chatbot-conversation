@@ -58,7 +58,7 @@ def main():
         verbose=True
     )
     
-    conv.save_conversation("result/climate_debate.txt")
+    conv.save_conversation("results/climate_debate.txt")
 
 if __name__ == "__main__":
     main()

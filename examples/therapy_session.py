@@ -51,10 +51,10 @@ def main():
     
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=therapist,
-        chatbot2_role=client,
-        chatbot1_name="Therapist",
-        chatbot2_name="Client",
+        chatbot1_role=client,
+        chatbot2_role=therapist,
+        chatbot1_name="Client",
+        chatbot2_name="Therapist",
         chatbot1_emoji="🧑‍⚕️",
         chatbot2_emoji="🧑‍💼",
         num_turns=6,
@@ -62,7 +62,7 @@ def main():
         verbose=True
     )
     
-    conv.save_conversation("result/therapy_session.txt")
+    conv.save_conversation("results/therapy_session.txt")
 
 if __name__ == "__main__":
     main()

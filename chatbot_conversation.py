@@ -184,10 +184,8 @@ class ChatbotConversation:
         conversation_log = []
         
         if verbose:
-            print()
-            print("INITIAL PROMPT")
+            print(f"\n\n{chatbot1_emoji} {chatbot1_name.upper()}\n")
             print(f"{initial_prompt}\n")
-            print()
         
         # Add initial prompt as if it came from chatbot 1
         messages.append({"role": "assistant", "content": initial_prompt})
@@ -202,7 +200,7 @@ class ChatbotConversation:
             # Chatbot 2 responds
             time.sleep(delay)
             if verbose:
-                print(f"{chatbot2_emoji} {chatbot2_name}")
+                print(f"\n\n{chatbot2_emoji} {chatbot2_name.upper()}")
                 print()
             
             # For chatbot 2, reverse the roles (assistant becomes user)
@@ -230,7 +228,7 @@ class ChatbotConversation:
             # Chatbot 1 responds
             time.sleep(delay)
             if verbose:
-                print(f"\n\n{chatbot1_emoji} {chatbot1_name}")
+                print(f"\n\n{chatbot1_emoji} {chatbot1_name.upper()}")
                 print()
             
             response1 = self.get_chatbot_response(

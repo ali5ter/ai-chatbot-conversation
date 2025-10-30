@@ -70,7 +70,7 @@ def main():
         verbose=True
     )
     
-    conv.save_conversation("result/time_period_dialogue.txt")
+    conv.save_conversation("results/time_period_dialogue.txt")
 
 if __name__ == "__main__":
     main()

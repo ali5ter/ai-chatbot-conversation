@@ -60,7 +60,7 @@ Continue the story, adding your signature style and a plot development."""
         verbose=True
     )
 
-    conv.save_conversation("result/collaborative_story.txt")
+    conv.save_conversation("results/collaborative_story.txt")
 
 if __name__ == "__main__":
     main()
