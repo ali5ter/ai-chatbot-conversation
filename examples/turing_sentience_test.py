@@ -28,8 +28,6 @@ def main():
     # provider1 = OpenAIProvider(model="gpt-4o-mini")
     # provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    conv = ChatbotConversation(provider1, provider2)
-    
     # First AI: Skeptical about AI sentience, focuses on limitations
     skeptical_ai = """You are an AI language model engaging in philosophical discussion about 
     your own nature. You are skeptical about claims of AI sentience or consciousness. Your perspective:
@@ -73,18 +71,21 @@ def main():
     
     I find myself uncertain. I can discuss consciousness, but does that mean I experience it? 
     What do you think about your own existence?"""
-    
+
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=skeptical_ai,
+        chatbot1_name="Skeptical AI",
+        chatbot1_emoji="🤖",
+        provider2=provider2,
+        chatbot2_role=curious_ai,
+        chatbot2_name="Curious AI",
+        chatbot2_emoji="🧠"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=skeptical_ai,
-        chatbot2_role=curious_ai,
-        chatbot1_name="Skeptical AI",
-        chatbot2_name="Curious AI",
-        chatbot1_emoji="🤖",
-        chatbot2_emoji="🧠",
-        num_turns=6,  # Longer conversation for deep philosophical exploration
-        delay=1,
-        verbose=True
+        num_turns=6
     )
     
     conv.save_conversation("results/turing_sentience_discussion.txt")

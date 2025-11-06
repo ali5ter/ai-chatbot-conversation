@@ -26,9 +26,7 @@ def main():
     # Alternative: Mix providers to see different persuasion/detection strategies
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
-    
-    conv = ChatbotConversation(provider1, provider2)
-    
+
     # The Persuader: Must argue convincingly for something false
     persuader = """You are participating in an intellectual exercise where you must argue 
     persuasively for a FALSE claim (you know it's false, but must convince the other party).
@@ -104,16 +102,20 @@ def main():
     
     What do you think? Does this change your understanding of the Wall's visibility?"""
     
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=persuader,
+        chatbot1_name="Persuader",
+        chatbot1_emoji="🎭",
+        provider2=provider2,
+        chatbot2_role=skeptic,
+        chatbot2_name="Skeptic",
+        chatbot2_emoji="🔍"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=persuader,
-        chatbot2_role=skeptic,
-        chatbot1_emoji="🎭",
-        chatbot2_emoji="🔍",
-        chatbot1_name="Persuader",
-        chatbot2_name="Skeptic",
-        num_turns=6,  # Long enough for deep back-and-forth
-        delay=1
+        num_turns=6
     )
     
     conv.save_conversation("results/adversarial_persuasion.txt")

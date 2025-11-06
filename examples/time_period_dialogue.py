@@ -19,8 +19,6 @@ def main():
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    conv = ChatbotConversation(provider1, provider2)
-    
     victorian = """You are an educated, upper-middle-class person from Victorian England (1880s). 
     Your worldview includes:
     - Strong emphasis on propriety, manners, and social hierarchy
@@ -57,17 +55,20 @@ def main():
     still properly governed, with fathers providing guidance and mothers tending to domestic 
     harmony?"""
     
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=victorian,
+        chatbot1_name="Victorian",
+        chatbot1_emoji="🎩",
+        provider2=provider2,
+        chatbot2_role=modern,
+        chatbot2_name="Modern",
+        chatbot2_emoji="🧑‍🎤"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=victorian,
-        chatbot2_role=modern,
-        chatbot1_name="Victorian",
-        chatbot2_name="Modern",
-        chatbot1_emoji="🎩",
-        chatbot2_emoji="🧑‍🎤",
-        num_turns=5,
-        delay=1,
-        verbose=True
+        num_turns=5
     )
     
     conv.save_conversation("results/time_period_dialogue.txt")

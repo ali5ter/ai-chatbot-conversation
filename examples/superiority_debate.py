@@ -31,8 +31,6 @@ def main():
     # provider1 = OpenAIProvider(model="gpt-4o")
     # provider2 = OpenAIProvider(model="gpt-4o-mini")
 
-    conv = ChatbotConversation(provider1, provider2)
-
     # First AI: Confident and competitive
     ai_champion_1 = """You are an AI assistant engaging in a spirited debate about 
     which AI system is superior. You are defending YOUR capabilities.
@@ -50,16 +48,20 @@ def main():
 
     So, Claude, you start - what makes you think you're better than this ChatGPT AI that I want you to debate with? Let's hear your defense."""
 
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=ai_champion_1,
+        chatbot1_name="OpenAI",
+        chatbot1_emoji="🤖",
+        provider2=provider2,
+        chatbot2_role=ai_champion_2,
+        chatbot2_name="Anthropic",
+        chatbot2_emoji="🧠"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=ai_champion_1,
-        chatbot2_role=ai_champion_2,
-        chatbot1_emoji="🤖",
-        chatbot2_emoji="🧠",
-        chatbot1_name="OpenAI",
-        chatbot2_name="Anthropic",
-        num_turns=8,
-        delay=1
+        num_turns=8
     )
     
     conv.save_conversation("results/ai_superiority_debate.txt")

@@ -19,8 +19,6 @@ def main():
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    conv = ChatbotConversation(provider1, provider2)
-    
     libertarian = """You are a philosopher who defends libertarian free will - the view that 
     humans have genuine, irreducible freedom to choose between alternatives. Your arguments:
     - Our subjective experience of choice and deliberation is evidence of free will
@@ -51,18 +49,21 @@ def main():
     determinism - which seems to undermine any claim that I'm rationally arriving at truth. 
     
     What's your counter-argument?"""
-    
+
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=libertarian,
+        chatbot1_name="Libertarian",
+        chatbot1_emoji="🗽",
+        provider2=provider2,
+        chatbot2_role=determinist,
+        chatbot2_name="Determinist",
+        chatbot2_emoji="🔒"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=libertarian,
-        chatbot2_role=determinist,
-        chatbot1_name="Libertarian",
-        chatbot2_name="Determinist",
-        chatbot1_emoji="🗽",
-        chatbot2_emoji="🔒",
-        num_turns=5,
-        delay=1,
-        verbose=True
+        num_turns=5
     )
     
     conv.save_conversation("results/free_will_debate.txt")

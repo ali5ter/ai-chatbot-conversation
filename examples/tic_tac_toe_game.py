@@ -24,8 +24,6 @@ def main():
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    conv = ChatbotConversation(provider1, provider2)
-    
     # Player X instructions
     player_x = """You are playing tic-tac-toe (noughts and crosses) as Player X. 
 
@@ -121,17 +119,20 @@ Board state:
 
 I'm taking the center - it's the strongest opening position! Your turn, O."""
 
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=player_x,
+        chatbot1_name="Player X",
+        chatbot1_emoji="❌",
+        provider2=provider2,
+        chatbot2_role=player_o,
+        chatbot2_name="Player O",
+        chatbot2_emoji="⭕"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=player_x,
-        chatbot2_role=player_o,
-        chatbot1_name="Player X",
-        chatbot2_name="Player O",
-        chatbot1_emoji="❌",
-        chatbot2_emoji="⭕",
-        num_turns=4,  # Up to 9 moves total (4 turns = 8 moves + initial move = 9)
-        delay=1,
-        verbose=True
+        num_turns=4
     )
     
     conv.save_conversation("results/tic_tac_toe_game.txt")

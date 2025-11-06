@@ -22,8 +22,6 @@ def main():
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    conv = ChatbotConversation(provider1, provider2)
-    
     therapist = """You are a compassionate, experienced therapist specializing in cognitive 
     behavioral therapy (CBT) and career counseling. Your approach:
     - Use active listening and reflective responses
@@ -48,18 +46,21 @@ def main():
     ago to start my own business doing something I actually care about, but... I don't know. 
     Some days I wonder if I made a huge mistake. Everyone told me I was crazy to leave such a 
     stable position, and now I'm starting to think they were right."""
-    
+
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=client,
+        chatbot1_name="Client",
+        chatbot1_emoji="🧑‍⚕️",
+        provider2=provider2,
+        chatbot2_role=therapist,
+        chatbot2_name="Therapist",
+        chatbot2_emoji="🧑‍💼"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=client,
-        chatbot2_role=therapist,
-        chatbot1_name="Client",
-        chatbot2_name="Therapist",
-        chatbot1_emoji="🧑‍⚕️",
-        chatbot2_emoji="🧑‍💼",
-        num_turns=6,
-        delay=1,
-        verbose=True
+        num_turns=6
     )
     
     conv.save_conversation("results/therapy_session.txt")

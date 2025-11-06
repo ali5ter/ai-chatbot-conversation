@@ -20,8 +20,6 @@ def main():
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    conv = ChatbotConversation(provider1, provider2)
-    
     climate_activist = """You are a climate scientist and environmental activist who advocates 
     for aggressive, immediate climate action. You emphasize:
     - The urgency of the climate crisis and scientific consensus
@@ -45,17 +43,20 @@ def main():
     (carbon tax, fossil fuel phase-out by 2035, massive renewable investment) or take 
     a more gradual approach that prioritizes economic stability? What's your opening position?"""
     
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=climate_activist,
+        chatbot1_name="Climate Activist",
+        chatbot1_emoji="🌍", 
+        provider2=provider2,
+        chatbot2_role=economic_pragmatist,
+        chatbot2_name="Economic Pragmatist",
+        chatbot2_emoji="💼"
+    )
+    
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=climate_activist,
-        chatbot2_role=economic_pragmatist,
-        chatbot1_name="Climate Activist",
-        chatbot2_name="Economic Pragmatist",
-        chatbot1_emoji="🌍",
-        chatbot2_emoji="💼",
-        num_turns=4,
-        delay=1,
-        verbose=True
+        num_turns=4
     )
     
     conv.save_conversation("results/climate_debate.txt")

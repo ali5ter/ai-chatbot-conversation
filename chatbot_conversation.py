@@ -121,16 +121,30 @@ class OllamaProvider(ChatProvider):
         return response.json()["response"]
 
 class ChatbotConversation:
-    def __init__(self, provider1, provider2=None):
+    def __init__(self, 
+                 provider1, chatbot1_role, chatbot1_name="Chatbot 1", chatbot1_emoji="🤖",
+                 provider2=None, chatbot2_role="User", chatbot2_name="Chatbot 2", chatbot2_emoji="👾"):
         """
         Initialize the chatbot conversation system.
         
         Args:
             provider1: ChatProvider instance for first chatbot
+            chatbot1_role: Role for first chatbot
+            chatbot1_name: Name identifier for first chatbot
+            chatbot1_emoji: Emoji identifier for first chatbot
             provider2: ChatProvider instance for second chatbot (if None, uses provider1)
+            chatbot2_role: Role for second chatbot
+            chatbot2_name: Name identifier for second chatbot
+            chatbot2_emoji: Emoji identifier for second chatbot
         """
         self.provider1 = provider1
+        self.chatbot1_role = chatbot1_role
+        self.chatbot1_name = chatbot1_name
+        self.chatbot1_emoji = chatbot1_emoji
         self.provider2 = provider2 or provider1
+        self.chatbot2_role = chatbot2_role
+        self.chatbot2_name = chatbot2_name
+        self.chatbot2_emoji = chatbot2_emoji
         self.conversation_history = []
         
     def get_chatbot_response(self, provider, chatbot_name, system_prompt, messages):
@@ -153,12 +167,6 @@ class ChatbotConversation:
     
     def run_conversation(self, 
             initial_prompt,
-            chatbot1_role,
-            chatbot2_role,
-            chatbot1_name="Chatbot 1",
-            chatbot2_name="Chatbot 2",
-            chatbot1_emoji="🤖",
-            chatbot2_emoji="👾",
             num_turns=5,
             delay=1,
             verbose=True):
@@ -167,12 +175,6 @@ class ChatbotConversation:
         
         Args:
             initial_prompt: The starting prompt for the conversation
-            chatbot1_role: Role for first chatbot
-            chatbot2_role: Role for second chatbot
-            chatbot1_name: Name identifier for first chatbot
-            chatbot2_name: Name identifier for second chatbot
-            chatbot1_emoji: Emoji identifier for first chatbot
-            chatbot2_emoji: Emoji identifier for second chatbot
             num_turns: Number of back-and-forth exchanges
             delay: Delay in seconds between API calls
             verbose: Print conversation to console
@@ -184,15 +186,15 @@ class ChatbotConversation:
         conversation_log = []
         
         if verbose:
-            print(f"\n\n{chatbot1_emoji} {chatbot1_name.upper()}\n")
+            print(f"\n\n{self.chatbot1_emoji} {self.chatbot1_name.upper()}\n")
             print(f"{initial_prompt}\n")
         
         # Add initial prompt as if it came from chatbot 1
         messages.append({"role": "assistant", "content": initial_prompt})
         conversation_log.append({
             "turn": 0,
-            "speaker": "{chatbot1_name} (Initial)",
-            "emoji": chatbot1_emoji,
+            "speaker": f"{self.chatbot1_name} (Initial)",
+            "emoji": self.chatbot1_emoji,
             "message": initial_prompt
         })
         
@@ -200,7 +202,7 @@ class ChatbotConversation:
             # Chatbot 2 responds
             time.sleep(delay)
             if verbose:
-                print(f"\n\n{chatbot2_emoji} {chatbot2_name.upper()}")
+                print(f"\n\n{self.chatbot2_emoji} {self.chatbot2_name.upper()}")
                 print()
             
             # For chatbot 2, reverse the roles (assistant becomes user)
@@ -212,7 +214,7 @@ class ChatbotConversation:
                 })
             
             response2 = self.get_chatbot_response(
-                self.provider2, chatbot2_name, chatbot2_role, reversed_messages
+                self.provider2, self.chatbot2_name, self.chatbot2_role, reversed_messages
             )
             if verbose:
                 print(response2)
@@ -220,19 +222,19 @@ class ChatbotConversation:
             messages.append({"role": "user", "content": response2})
             conversation_log.append({
                 "turn": turn + 1,
-                "speaker": chatbot2_name,
-                "emoji": chatbot2_emoji,
+                "speaker": self.chatbot2_name,
+                "emoji": self.chatbot2_emoji,
                 "message": response2
             })
             
             # Chatbot 1 responds
             time.sleep(delay)
             if verbose:
-                print(f"\n\n{chatbot1_emoji} {chatbot1_name.upper()}")
+                print(f"\n\n{self.chatbot1_emoji} {self.chatbot1_name.upper()}")
                 print()
             
             response1 = self.get_chatbot_response(
-                self.provider1, chatbot1_name, chatbot1_role, messages)
+                self.provider1, self.chatbot1_name, self.chatbot1_role, messages)
             if verbose:
                 print(response1)
                 print()
@@ -240,8 +242,8 @@ class ChatbotConversation:
             messages.append({"role": "assistant", "content": response1})
             conversation_log.append({
                 "turn": turn + 1,
-                "speaker": chatbot1_name,
-                "emoji": chatbot1_emoji,
+                "speaker": self.chatbot1_name,
+                "emoji": self.chatbot1_emoji,
                 "message": response1
             })
         

@@ -19,8 +19,6 @@ def main():
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    conv = ChatbotConversation(provider1, provider2)
-    
     writer1 = """You are a creative writer who specializes in character development and 
     psychological depth. When continuing the story:
     - Focus on character motivations, internal conflicts, and emotional reactions
@@ -47,17 +45,21 @@ feeling that someone was watching her.
 
 Continue the story, adding your signature style and a plot development."""
     
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=writer1,
+        chatbot1_name="Writer 1",
+        chatbot1_emoji="✍️",
+        provider2=provider2,
+        chatbot2_role=writer2,
+        chatbot2_name="Writer 2",
+        chatbot2_emoji="🖋️"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=writer1,
-        chatbot2_role=writer2,
-        chatbot1_name="Writer 1",
-        chatbot2_name="Writer 2",
-        chatbot1_emoji="✍️",
-        chatbot2_emoji="🖋️",
         num_turns=5,
-        delay=1,
-        verbose=True
+        delay=1
     )
 
     conv.save_conversation("results/collaborative_story.txt")

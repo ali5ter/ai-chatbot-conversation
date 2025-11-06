@@ -37,9 +37,6 @@ def main():
     # provider1 = OllamaProvider(model="llama2")
     # provider2 = OllamaProvider(model="mistral")
     
-    # Initialize the conversation system
-    conv = ChatbotConversation(provider1, provider2)
-    
     # Define roles and personalities for the chatbots
     policy_expert = """You are an AI policy expert with a focus on practical implementation. 
     You think about concrete tools, specific policy language, and real-world applications. 
@@ -54,19 +51,23 @@ def main():
     would you do this and how might this provide the basis for some AI usage policy that a 
     non-profit might use? Brainstorm specific tools readily available to employees to use and 
     specific content to include in a policy... discuss."""
+
+    # Initialize the conversation system
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=policy_expert,
+        chatbot1_name="Policy Expert",
+        chatbot1_emoji="📋",
+        provider2=provider2,
+        chatbot2_role=ethics_researcher,
+        chatbot2_name="Ethics Researcher",
+        chatbot2_emoji="🔬"
+    )
     
     # Run the conversation for 3 turns (6 total messages)
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=policy_expert,
-        chatbot2_role=ethics_researcher,
-        chatbot1_name="Policy Expert",
-        chatbot2_name="Ethics Researcher",
-        chatbot1_emoji="📋",
-        chatbot2_emoji="🔬",
-        num_turns=3,
-        delay=1,
-        verbose=True
+        num_turns=3
     )
     
     # Save the conversation

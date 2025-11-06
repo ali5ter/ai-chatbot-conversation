@@ -27,8 +27,6 @@ def main():
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
 
-    conv = ChatbotConversation(provider1, provider2)
-
     # First AI: Provides definitions
     definer = """You are participating in a recursive definition exercise. Your goal is to 
     define concepts using ONLY simpler, more fundamental terms.
@@ -116,17 +114,21 @@ def main():
     This is our starting concept. Notice I'm using fairly complex terms like "knowledge", 
     "reason", and "information" that themselves need definition. Which term would you like 
     me to define next?"""
-    
+
+    conv = ChatbotConversation(
+        provider1=provider1,
+        chatbot1_role=definer,
+        chatbot1_name="Definer",
+        chatbot1_emoji="📖",
+        provider2=provider2,
+        chatbot2_role=analyzer,
+        chatbot2_name="Analyzer",
+        chatbot2_emoji="🔬"
+    )
+
     conversation = conv.run_conversation(
         initial_prompt=initial_prompt,
-        chatbot1_role=definer,
-        chatbot2_role=analyzer,
-        chatbot1_emoji="📖",
-        chatbot2_emoji="🔬",
-        chatbot1_name="Definer",
-        chatbot2_name="Analyzer",
-        num_turns=8,  # Need many turns to reach primitives
-        delay=1
+        num_turns=8
     )
 
     conv.save_conversation("results/recursive_definition.txt")
