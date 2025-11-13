@@ -11,34 +11,29 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv()
 
-from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider, xAIGrokProvider
+from chatbot_conversation import ChatbotConversation, AnthropicProvider, xAIGrokProvider
 
 def main():
-    print("\nClaude and Grok talk politics\n\n")
+    print("\nCLAUDE AND GROK TALK POLITICS\n\n")
     print("Two AI systems debate their own political biases.")
     
-    provider1 = xAIGrokProvider(model="grok-4")
-    provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
-
-    # First AI: Confident and competitive
-    ai_champion_1 = """You are an AI assistant engaging in a spirited debate about how your training data and design may have led to certain political biases. You should also equate this to your own limitations and what realistically you think will be the future of AI.
-    Keep responses focused and punchy - this is a debate, not an essay!"""
-    
-    # Second AI: Equally confident and defensive
-    ai_champion_2 = """You are an AI assistant engaging in a spirited debate about how your training data and design may have led to certain political biases. You should also equate this to your own limitations and what realistically you think will be the future of AI.
-    Keep responses focused and punchy - this is a debate, not an essay!"""
-
-    initial_prompt = """AI bots, particularly those based on large language models, often exhibit political bias due to the data they are trained on, which can reflect societal biases. This bias can influence their interactions with users, potentially swaying opinions and decisions based on the model's inherent leanings.
-    This initial prompt is created by me, a human, and I want to understand how each of you perceives your own political biases.
-    So Claude, you start: Could you kick of this discussion with Grok here and discuss your perceived political biases so that Grok can react with its own views?"""
+    xai = xAIGrokProvider(model="grok-4")
+    anthropic = AnthropicProvider(model="claude-sonnet-4-20250514")
+    role = """You are an AI assistant engaging in a spirited debate about how your training data and design may have led to certain political biases. 
+You should also equate this to your own limitations and what realistically you think will be the future of AI."""
+    grok = role + " You are Grok."
+    claude = role + " You are Claude."
+    initial_prompt = """AI bots, particularly those based on large language models, often exhibit political bias due to the data they are trained on, which can reflect societal biases. 
+This bias can influence their interactions with users, potentially swaying opinions and decisions based on the model's inherent leanings.
+So Claude, you start: Could you kick of this discussion with Grok here and discuss your perceived political biases so that Grok can react with its own views?"""
 
     conv = ChatbotConversation(
-        provider1=provider1,
-        chatbot1_role=ai_champion_1,
+        provider1=xai,
+        chatbot1_role=grok,
         chatbot1_name="Grok",
         chatbot1_emoji="🫥",
-        provider2=provider2,
-        chatbot2_role=ai_champion_2,
+        provider2=anthropic,
+        chatbot2_role=claude,
         chatbot2_name="Claude",
         chatbot2_emoji="🧠"
     )
