@@ -4,7 +4,7 @@ A Python framework for enabling conversations between two AI chatbots. Supports 
 
 ## Features
 
-- **Multiple AI Providers**: OpenAI, Anthropic Claude, Ollama (local models)
+- **Multiple AI Providers**: OpenAI ChatGPT, Anthropic Claude, xAI Grok, and Ollama (local models)
 - **Mix and Match**: Have different AI models debate each other (e.g., GPT-4 vs Claude)
 - **Flexible Configuration**: Customize system prompts, turn counts, and conversation parameters
 - **Conversation Logging**: Save conversations to text files for later analysis
@@ -91,6 +91,22 @@ ANTHROPIC_API_KEY=your-anthropic-key
    - Claude Opus 4: ~$15 per 1M input tokens, ~$75 per 1M output tokens
    - Check the [current pricing](https://www.anthropic.com/pricing)
 
+### xAI API key
+
+1. **Create an xAI account**
+   - Navigate to the [the xAI accounts site](https://accounts.x.ai/)
+   - Click Log in and then sign up.
+
+2. **Add credits**
+   - Navigate to the [xAI console](https://console.x.ai)
+   - Click "Purchace" to purchace credits
+   - Purchase credits (minimum $5)
+
+3. **Generate API Key**
+   - Click "Create" to create your first API key
+   - **Important**: Copy the key immediately - it won't be shown again!
+   - Store it securely
+
 ### Security Best Practices
 
 ⚠️ **Never commit API keys to Git!**
@@ -156,6 +172,13 @@ provider = OpenAIProvider(model="gpt-4o-mini")
 ```python
 from chatbot_conversation import AnthropicProvider
 provider = AnthropicProvider(model="claude-sonnet-4-20250514")
+```
+
+### xAI Grok
+
+```python
+from chatbot_conversation import xAIGrokProvider
+provider = xAIGrokProvider(model="grok-4")
 ```
 
 ### Ollama (Local Models)

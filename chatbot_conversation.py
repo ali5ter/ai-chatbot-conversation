@@ -119,6 +119,34 @@ class OllamaProvider(ChatProvider):
             }
         )
         return response.json()["response"]
+    
+class xAIGrokProvider(ChatProvider):
+    def __init__(self, api_key=None, model="grok-4", base_url="https://api.x.ai/v1"):
+        try:
+            from openai import OpenAI
+        except ImportError:
+            raise ImportError("OpenAI package not installed. Run: pip install openai")
+
+        self.api_key = api_key or os.environ.get("XAI_API_KEY")
+        if not self.api_key:
+            raise ValueError(
+                "xAI API key not found. Set XAI_API_KEY or pass api_key.\n"
+                "Create a key at: https://console.x.ai/"
+            )
+        self.client = OpenAI(api_key=self.api_key, base_url=base_url)
+        self.model = model
+        print(f"Grok Provider initialized with model: {model}")
+
+    def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
+        # OpenAI-compatible chat.completions call, just like your OpenAIProvider
+        full_messages = [{"role": "system", "content": system_prompt}] + messages
+        resp = self.client.chat.completions.create(
+            model=self.model,
+            messages=full_messages,
+            temperature=temperature,
+            max_tokens=max_tokens
+        )
+        return resp.choices[0].message.content
 
 class ChatbotConversation:
     def __init__(self, 
@@ -186,15 +214,15 @@ class ChatbotConversation:
         conversation_log = []
         
         if verbose:
-            print(f"\n\n{self.chatbot1_emoji} {self.chatbot1_name.upper()}\n")
+            print(f"\n\n🤔 INITIAL PROMPT\n")
             print(f"{initial_prompt}\n")
         
         # Add initial prompt as if it came from chatbot 1
         messages.append({"role": "assistant", "content": initial_prompt})
         conversation_log.append({
             "turn": 0,
-            "speaker": f"{self.chatbot1_name} (Initial)",
-            "emoji": self.chatbot1_emoji,
+            "speaker": "Initial Prompt",
+            "emoji": "🤔",
             "message": initial_prompt
         })
         
