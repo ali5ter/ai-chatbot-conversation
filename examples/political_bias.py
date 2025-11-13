@@ -17,8 +17,8 @@ def main():
     print("\nClaude and Grok talk politics\n\n")
     print("Two AI systems debate their own political biases.")
     
-    provider1 = AnthropicProvider(model="claude-sonnet-4-20250514")
-    provider2 = xAIGrokProvider(model="grok-4")
+    provider1 = xAIGrokProvider(model="grok-4")
+    provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
 
     # First AI: Confident and competitive
     ai_champion_1 = """You are an AI assistant engaging in a spirited debate about how your training data and design may have led to certain political biases. You should also equate this to your own limitations and what realistically you think will be the future of AI.
