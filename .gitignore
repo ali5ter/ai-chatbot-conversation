@@ -49,3 +49,6 @@ tts_temp_output.mp3
 # OS
 .DS_Store
 Thumbs.db
+
+# My personal prompts
+my_prompts
