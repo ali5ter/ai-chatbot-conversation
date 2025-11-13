@@ -40,6 +40,12 @@ env/
 *.txt
 !requirements.txt
 
+# Voice configuration
+voices.json
+
+# Temporary audio files
+tts_temp_output.mp3
+
 # OS
 .DS_Store
 Thumbs.db

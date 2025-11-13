@@ -241,6 +241,89 @@ Customize conversations with these parameters:
 - **Education**: Demonstrate AI capabilities and limitations
 - **Content Generation**: Create dialogue for stories, scripts, or educational materials
 
+## 🎤 Performing Conversations with Text-to-Speech (TTS)
+
+This project can generate multi-agent chatbot conversations and also **perform them aloud** using OpenAI’s text-to-speech engine. Each participant (Human or chatbots) can be assigned a unique voice.
+
+### 1. Setup
+
+Copy the voice-mapping file:
+
+```bash
+cp voices.json.template voices.json
+```
+
+Set your OpenAI API key:
+
+```bash
+export OPENAI_API_KEY="your-key-here"
+```
+
+Edit `voices.json` to control voice overrides:
+
+```json
+{
+    "Human": "verse",
+    "_default": "alloy"
+}
+```
+
+#### Dynamic Voice Assignment
+
+Chatbot names are user-defined in `chatbot_conversation.py`.  
+Because they can vary each run, `perform.py` assigns new voices dynamically:
+
+- The first unknown speaker → `alloy`  
+- The next → `verse`  
+- Then → `sol`  
+- Then → `shimmer`  
+- …cycling if more are needed.
+
+You may override any name by adding it to `voices.json`:
+
+```json
+{
+    "Initial Prompt": "verse",
+    "Chatbot 1": "sol",
+    "Chatbot 2": "alloy",
+    "_default": "alloy"
+}
+```
+
+### 2. Generate a Conversation
+
+Run the normal generator:
+
+```bash
+python chatbot_conversation.py
+```
+
+A transcript will appear in `outputs/` or whatever you define as the output folder.
+
+### 3. Perform a Transcript Aloud
+
+```bash
+python perform.py outputs/conversation_YYYY-MM-DD.txt
+```
+
+### 4. How It Works
+
+`perform.py`:
+
+- reads the transcript saved by `chatbot_conversation.py`
+- extracts speaker names from lines like:
+
+  ```txt
+  🙂 Chatbot Name
+  🧑‍💻 Human
+  ```
+
+- maps them to voices via:
+  - explicit overrides in `voices.json`
+  - or dynamic assignment
+- streams audio using `gpt-4o-mini-tts`
+- plays each segment live with `afplay` (macOS)
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
