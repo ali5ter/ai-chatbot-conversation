@@ -40,7 +40,7 @@ So, Claude, you start - what makes you think you're better than this ChatGPT AI 
         chatbot2_emoji="🧠"
     )
 
-    conversation = conv.run_conversation(
+    conv.run_conversation(
         initial_prompt=initial_prompt,
         num_turns=8
     )

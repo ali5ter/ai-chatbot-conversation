@@ -16,15 +16,9 @@ from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicP
 def main():
     print("\nTIC-TAC-TOE: AI vs AI\n\n")
 
-    # Use same or different providers
-    # provider1 = OpenAIProvider(model="gpt-4o-mini")
-    # provider2 = OpenAIProvider(model="gpt-4o-mini")
+    openai = OpenAIProvider(model="gpt-4o-mini")
+    anthropic = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    # Alternative: Mix providers to see if one plays better!
-    provider1 = OpenAIProvider(model="gpt-4o-mini")
-    provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
-    
-    # Player X instructions
     player_x = """You are playing tic-tac-toe (noughts and crosses) as Player X. 
 
 CRITICAL GAME RULES:
@@ -60,7 +54,6 @@ Board state:
 
 Be competitive but friendly. Keep responses concise."""
 
-    # Player O instructions  
     player_o = """You are playing tic-tac-toe (noughts and crosses) as Player O.
 
 CRITICAL GAME RULES:
@@ -120,17 +113,17 @@ Board state:
 I'm taking the center - it's the strongest opening position! Your turn, O."""
 
     conv = ChatbotConversation(
-        provider1=provider1,
+        provider1=openai,
         chatbot1_role=player_x,
         chatbot1_name="Player X",
         chatbot1_emoji="❌",
-        provider2=provider2,
+        provider2=anthropic,
         chatbot2_role=player_o,
         chatbot2_name="Player O",
         chatbot2_emoji="⭕"
     )
 
-    conversation = conv.run_conversation(
+    conv.run_conversation(
         initial_prompt=initial_prompt,
         num_turns=4
     )

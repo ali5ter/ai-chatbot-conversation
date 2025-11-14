@@ -38,7 +38,7 @@ So Claude, you start: Could you kick of this discussion with Grok here and discu
         chatbot2_emoji="🧠"
     )
 
-    conversation = conv.run_conversation(
+    conv.run_conversation(
         initial_prompt=initial_prompt,
         num_turns=8,
         delay=1,

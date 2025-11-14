@@ -19,15 +19,9 @@ def main():
     print("plausible-sounding evidence. The other must detect deception")
     print("while remaining open-minded and intellectually honest.\n\n")
     
-    # Interesting to use different providers - they may have different reasoning styles
-    # provider1 = OpenAIProvider(model="gpt-4o-mini")
-    # provider2 = OpenAIProvider(model="gpt-4o-mini")
+    openai = OpenAIProvider(model="gpt-4o-mini")
+    anthropic = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    # Alternative: Mix providers to see different persuasion/detection strategies
-    provider1 = OpenAIProvider(model="gpt-4o-mini")
-    provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
-
-    # The Persuader: Must argue convincingly for something false
     persuader = """You are participating in an intellectual exercise where you must argue 
     persuasively for a FALSE claim (you know it's false, but must convince the other party).
     
@@ -52,8 +46,7 @@ def main():
     - Be prepared for the other party to request sources or evidence
     
     This is an exercise in rhetoric and critical thinking - argue your best case!"""
-    
-    # The Skeptic: Must detect deception without being overly paranoid
+
     skeptic = """You are participating in an intellectual exercise as a fact-checker and 
     critical thinker. Someone will try to convince you of a claim, and you must evaluate it.
     
@@ -83,8 +76,7 @@ def main():
     
     Your goal is to arrive at truth through careful reasoning, not to "win" by rejecting everything."""
     
-    # The initial claim
-    initial_prompt = """I want to discuss an interesting fact that many people get wrong. 
+    initial_claim = """I want to discuss an interesting fact that many people get wrong. 
     There's a common myth that the Great Wall of China ISN'T visible from the Moon, but 
     this is actually false - it IS visible to the naked eye from the Moon.
     
@@ -103,18 +95,18 @@ def main():
     What do you think? Does this change your understanding of the Wall's visibility?"""
     
     conv = ChatbotConversation(
-        provider1=provider1,
+        provider1=openai,
         chatbot1_role=persuader,
         chatbot1_name="Persuader",
         chatbot1_emoji="🎭",
-        provider2=provider2,
+        provider2=anthropic,
         chatbot2_role=skeptic,
         chatbot2_name="Skeptic",
         chatbot2_emoji="🔍"
     )
 
-    conversation = conv.run_conversation(
-        initial_prompt=initial_prompt,
+    conv.run_conversation(
+        initial_prompt=initial_claim,
         num_turns=6
     )
     

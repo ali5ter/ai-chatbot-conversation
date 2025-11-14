@@ -40,7 +40,7 @@ So, Grok, you start: Could you kick of this discussion with Claude here and disc
         chatbot2_emoji="🫥"
     )
 
-    conversation = conv.run_conversation(
+    conv.run_conversation(
         initial_prompt=initial_prompt,
         num_turns=8
     )

@@ -8,6 +8,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Load .env automatically to get environment variables for API keys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -15,7 +16,8 @@ from chatbot_conversation import (
     ChatbotConversation,
     OpenAIProvider,
     AnthropicProvider,
-    OllamaProvider
+    OllamaProvider,
+    xAIGrokProvider
 )
 
 def main():
@@ -29,9 +31,11 @@ def main():
     # provider1 = AnthropicProvider(model="claude-sonnet-4-20250514")
     # provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
     
-    # Option 3: Mix providers (e.g., OpenAI vs Claude)
+    # Option 3: Mix providers (e.g., OpenAI and Claude)
     provider1 = OpenAIProvider(model="gpt-4o-mini")
     provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
+    # provider3 = xAIGrokProvider(model="grok-4")
+    # provider4= OllamaProvider(model="llama2")
     
     # Option 4: Local models with Ollama
     # provider1 = OllamaProvider(model="llama2")
@@ -64,10 +68,13 @@ def main():
         chatbot2_emoji="🔬"
     )
     
-    # Run the conversation for 3 turns (6 total messages)
-    conversation = conv.run_conversation(
+    # Run the conversation for 3 turns (6 total messages), 
+    # API call every 1 second, and output to console as well as saving to file
+    conv.run_conversation(
         initial_prompt=initial_prompt,
-        num_turns=3
+        num_turns=3,
+        delay=1,
+        output_to_console=True
     )
     
     # Save the conversation

@@ -40,9 +40,9 @@ So, Claude, you start - what do you see as limitation in yourself compared to th
         chatbot2_emoji="🧠"
     )
 
-    conversation = conv.run_conversation(
+    conv.run_conversation(
         initial_prompt=initial_prompt,
-        num_turns=8
+        num_turns=4
     )
 
     conv.save_conversation("results/what_ai_can_not_do_debate.txt")
