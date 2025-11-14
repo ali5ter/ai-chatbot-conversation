@@ -11,7 +11,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv()
 
-from chatbot_conversation import ChatbotConversation, xAIGrokProvider, AnthropicProvider
+from providers import AnthropicProvider, xAIGrokProvider
+from chatbot_conversation import ChatbotConversation
 
 def main():
     print("\nTURING TEST & AI SENTIENCE: Self-Reflection on Consciousness\n\n")

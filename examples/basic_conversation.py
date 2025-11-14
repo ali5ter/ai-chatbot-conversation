@@ -12,13 +12,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv()
 
-from chatbot_conversation import (
-    ChatbotConversation,
-    OpenAIProvider,
-    AnthropicProvider,
-    OllamaProvider,
-    xAIGrokProvider
-)
+from providers import OpenAIProvider, AnthropicProvider, OllamaProvider, xAIGrokProvider
+from chatbot_conversation import ChatbotConversation
 
 def main():
     # Choose your provider(s):
@@ -74,7 +69,7 @@ def main():
         initial_prompt=initial_prompt,
         num_turns=3,
         delay=1,
-        output_to_console=True
+        verbose=True
     )
     
     # Save the conversation

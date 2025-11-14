@@ -11,7 +11,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv()
 
-from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
+from providers import OpenAIProvider, AnthropicProvider
+from chatbot_conversation import ChatbotConversation
 
 def main():
     print("\nPHILOSOPHICAL DEBATE: Free Will vs Determinism\n\n")

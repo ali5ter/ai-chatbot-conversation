@@ -131,7 +131,8 @@ load_dotenv()  # This loads variables from .env file
 ## Quick Start
 
 ```python
-from chatbot_conversation import ChatbotConversation, OpenAIProvider, AnthropicProvider
+from providers import OpenAIProvider, AnthropicProvider
+from chatbot_conversation import ChatbotConversation
 
 # Create two chatbots
 openai = OpenAIProvider(model="gpt-4o-mini")
@@ -172,28 +173,28 @@ conv.save_conversation("my_conversation.txt")
 ### OpenAI
 
 ```python
-from chatbot_conversation import OpenAIProvider
+from providers import OpenAIProvider
 provider = OpenAIProvider(model="gpt-4o-mini")
 ```
 
 ### Anthropic Claude
 
 ```python
-from chatbot_conversation import AnthropicProvider
+from providers import AnthropicProvider
 provider = AnthropicProvider(model="claude-sonnet-4-20250514")
 ```
 
 ### xAI Grok
 
 ```python
-from chatbot_conversation import xAIGrokProvider
+from providers import xAIGrokProvider
 provider = xAIGrokProvider(model="grok-4")
 ```
 
 ### Ollama (Local Models)
 
 ```python
-from chatbot_conversation import OllamaProvider
+from providers import OllamaProvider
 provider = OllamaProvider(model="llama2")
 ```
 
@@ -315,14 +316,14 @@ python perform.py conversation.txt --mode openai-mp3
 
 If the conversation contains chatbot names like:
 
-```
+```text
 🙂 Claude
 🤖 Grok
 ```
 
 These will automatically be assigned voices from a rotating pool:
 
-```
+```text
 alloy, echo, fable, onyx, nova, shimmer, coral, verse,
 ballad, ash, sage, marin, cedar
 ```
