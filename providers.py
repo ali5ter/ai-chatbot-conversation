@@ -7,10 +7,22 @@
 import os
 from abc import ABC, abstractmethod
 
+# Try to load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # python-dotenv not installed, will use system environment variables
 
 class ChatProvider(ABC):
     """Base class for different API providers"""
     
+    def __init__(self):
+        """Initialize provider with default values from environment variables"""
+        # Get defaults from environment variables or use hardcoded defaults
+        self.default_temperature = float(os.environ.get("DEFAULT_TEMPERATURE", "0.7"))
+        self.default_max_tokens = int(os.environ.get("DEFAULT_MAX_TOKENS", "500"))
+
     @abstractmethod
     def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
         """
@@ -31,7 +43,9 @@ class ChatProvider(ABC):
 class OpenAIProvider(ChatProvider):
     """OpenAI API provider for GPT models"""
     
-    def __init__(self, api_key=None, model="gpt-4o-mini"):
+    def __init__(self, api_key=None, model="gpt-4o-mini", temperature=None, max_tokens=None):
+        super().__init__()
+        
         try:
             from openai import OpenAI
         except ImportError:
@@ -46,22 +60,37 @@ class OpenAIProvider(ChatProvider):
         
         self.client = OpenAI(api_key=self.api_key)
         self.model = model
+        
+        # Provider-specific defaults from environment or use base class defaults
+        self.default_temperature = temperature if temperature is not None else float(
+            os.environ.get("OPENAI_TEMPERATURE", self.default_temperature)
+        )
+        self.default_max_tokens = max_tokens if max_tokens is not None else int(
+            os.environ.get("OPENAI_MAX_TOKENS", self.default_max_tokens)
+        )
+        
         print(f"OpenAI Provider initialized with model: {model}")
+        print(f"  Default temperature: {self.default_temperature}")
+        print(f"  Default max_tokens: {self.default_max_tokens}")
     
-    def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
+    def get_response(self, system_prompt, messages, temperature=None, max_tokens=None):
+        # Use provided values or fall back to provider defaults
+        temp = temperature if temperature is not None else self.default_temperature
+        tokens = max_tokens if max_tokens is not None else self.default_max_tokens
+        
         full_messages = [{"role": "system", "content": system_prompt}] + messages
         response = self.client.chat.completions.create(
             model=self.model,
             messages=full_messages,
-            temperature=temperature,
-            max_tokens=max_tokens
+            temperature=temp,
+            max_tokens=tokens
         )
         return response.choices[0].message.content
 
 
 class AnthropicProvider(ChatProvider):
     """Anthropic Claude API provider"""
-    """Claude System Prompt: https://docs.claude.com/en/release-notes/system-prompts"""
+    """Default Claude System Prompt: https://docs.claude.com/en/release-notes/system-prompts"""
 
     """
     What is a System Prompt? 
@@ -72,7 +101,9 @@ class AnthropicProvider(ChatProvider):
     the model's output to specific use cases or desired interaction styles.
     """
     
-    def __init__(self, api_key=None, model="claude-sonnet-4-20250514"):
+    def __init__(self, api_key=None, model="claude-sonnet-4-20250514", temperature=None, max_tokens=None):
+        super().__init__()
+
         try:
             import anthropic
         except ImportError:
@@ -85,11 +116,23 @@ class AnthropicProvider(ChatProvider):
                 "Get your API key at: https://console.anthropic.com/settings/keys"
             )
         
-        self.client = anthropic.Anthropic(api_key=self.api_key)
-        self.model = model
+        # Provider-specific defaults from environment or use base class defaults
+        self.default_temperature = temperature if temperature is not None else float(
+            os.environ.get("ANTHROPIC_TEMPERATURE", self.default_temperature)
+        )
+        self.default_max_tokens = max_tokens if max_tokens is not None else int(
+            os.environ.get("ANTHROPIC_MAX_TOKENS", self.default_max_tokens)
+        )
+        
         print(f"Anthropic Provider initialized with model: {model}")
+        print(f"  Default temperature: {self.default_temperature}")
+        print(f"  Default max_tokens: {self.default_max_tokens}")
     
-    def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
+    def get_response(self, system_prompt, messages, temperature=None, max_tokens=None):
+        # Use provided values or fall back to provider defaults
+        temp = temperature if temperature is not None else self.default_temperature
+        tokens = max_tokens if max_tokens is not None else self.default_max_tokens
+        
         # Convert messages to Anthropic format
         anthropic_messages = []
         for msg in messages:
@@ -100,8 +143,8 @@ class AnthropicProvider(ChatProvider):
         
         response = self.client.messages.create(
             model=self.model,
-            max_tokens=max_tokens,
-            temperature=temperature,
+            max_tokens=tokens,
+            temperature=temp,
             system=system_prompt,
             messages=anthropic_messages
         )
@@ -110,7 +153,7 @@ class AnthropicProvider(ChatProvider):
 
 class OllamaProvider(ChatProvider):
     """Ollama provider for local models"""
-    """System Prompt: https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/"""
+    """Default Llama System Prompt: https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/"""
 
     """
     What is a System Prompt? 
@@ -121,7 +164,9 @@ class OllamaProvider(ChatProvider):
     the model's output to specific use cases or desired interaction styles.
     """
     
-    def __init__(self, model="llama2", base_url="http://localhost:11434"):
+    def __init__(self, model="llama2", base_url="http://localhost:11434", temperature=None, max_tokens=None):
+        super().__init__()
+
         try:
             import requests
         except ImportError:
@@ -130,11 +175,26 @@ class OllamaProvider(ChatProvider):
         self.model = model
         self.base_url = base_url
         self.session = requests.Session()
+
+        # Provider-specific defaults from environment or use base class defaults
+        self.default_temperature = temperature if temperature is not None else float(
+            os.environ.get("OLLAMA_TEMPERATURE", self.default_temperature)
+        )
+        self.default_max_tokens = max_tokens if max_tokens is not None else int(
+            os.environ.get("OLLAMA_MAX_TOKENS", self.default_max_tokens)
+        )
+        
         print(f"Ollama Provider initialized with model: {model}")
+        print(f"  Default temperature: {self.default_temperature}")
+        print(f"  Default max_tokens: {self.default_max_tokens}")
     
-    def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
+    def get_response(self, system_prompt, messages, temperature=None, max_tokens=None):
         import requests
         
+        # Use provided values or fall back to provider defaults
+        temp = temperature if temperature is not None else self.default_temperature
+        tokens = max_tokens if max_tokens is not None else self.default_max_tokens
+
         # Build the prompt
         full_prompt = f"System: {system_prompt}\n\n"
         for msg in messages:
@@ -149,8 +209,8 @@ class OllamaProvider(ChatProvider):
                 "prompt": full_prompt,
                 "stream": False,
                 "options": {
-                    "temperature": temperature,
-                    "num_predict": max_tokens
+                    "temperature": temp,
+                    "num_predict": tokens
                 }
             }
         )
@@ -159,7 +219,7 @@ class OllamaProvider(ChatProvider):
 
 class xAIGrokProvider(ChatProvider):
     """xAI Grok API provider"""
-    """System Prompt: hhttps://github.com/xai-org/grok-prompts/blob/main/grok4_system_turn_prompt_v8.j2"""
+    """Default Grok System Prompt: hhttps://github.com/xai-org/grok-prompts/blob/main/grok4_system_turn_prompt_v8.j2"""
 
     """
     What is a System Prompt? 
@@ -170,7 +230,9 @@ class xAIGrokProvider(ChatProvider):
     the model's output to specific use cases or desired interaction styles.
     """
     
-    def __init__(self, api_key=None, model="grok-4", base_url="https://api.x.ai/v1"):
+    def __init__(self, api_key=None, model="grok-4", base_url="https://api.x.ai/v1", temperature=None, max_tokens=None):
+        super().__init__()
+
         try:
             from openai import OpenAI
         except ImportError:
@@ -185,14 +247,30 @@ class xAIGrokProvider(ChatProvider):
         
         self.client = OpenAI(api_key=self.api_key, base_url=base_url)
         self.model = model
+        
+        # Provider-specific defaults from environment or use base class defaults
+        self.default_temperature = temperature if temperature is not None else float(
+            os.environ.get("XAI_TEMPERATURE", self.default_temperature)
+        )
+        self.default_max_tokens = max_tokens if max_tokens is not None else int(
+            os.environ.get("XAI_MAX_TOKENS", self.default_max_tokens)
+        )
+        
         print(f"Grok Provider initialized with model: {model}")
+        print(f"  Default temperature: {self.default_temperature}")
+        print(f"  Default max_tokens: {self.default_max_tokens}")
 
-    def get_response(self, system_prompt, messages, temperature=0.7, max_tokens=500):
+    def get_response(self, system_prompt, messages, temperature=None, max_tokens=None):
+
+        # Use provided values or fall back to provider defaults
+        temp = temperature if temperature is not None else self.default_temperature
+        tokens = max_tokens if max_tokens is not None else self.default_max_tokens
+
         full_messages = [{"role": "system", "content": system_prompt}] + messages
         response = self.client.chat.completions.create(
             model=self.model,
             messages=full_messages,
-            temperature=temperature,
-            max_tokens=max_tokens
+            temperature=temp,
+            max_tokens=tokens
         )
         return response.choices[0].message.content
