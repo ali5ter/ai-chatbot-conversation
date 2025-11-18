@@ -41,6 +41,34 @@ OPENAI_API_KEY=your-openai-key
 ANTHROPIC_API_KEY=your-anthropic-key
 ```
 
+5.Optionally control options for all or each provider you use.
+
+Examples:
+
+```bash
+export DEFAULT_TEMPERATURE=0.7
+export DEFAULT_MAX_TOKENS=1500
+```
+
+Or create a `.env` file in the project root:
+
+```bash
+DEFAULT_TEMPERATURE=0.7
+DEFAULT_MAX_TOKENS=1500
+
+# OPENAI_TEMPERATURE=0.7
+# OPENAI_MAX_TOKENS=1500
+
+# ANTHROPIC_TEMPERATURE=0.7
+# ANTHROPIC_MAX_TOKENS=1500
+
+# OLLAMA_TEMPERATURE=0.7
+# OLLAMA_MAX_TOKENS=1500
+
+# XAI_TEMPERATURE=0.7
+# XAI_MAX_TOKENS=1500
+```
+
 ## Getting API Keys
 
 ### OpenAI API Key
