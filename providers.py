@@ -61,6 +61,16 @@ class OpenAIProvider(ChatProvider):
 
 class AnthropicProvider(ChatProvider):
     """Anthropic Claude API provider"""
+    """Claude System Prompt: https://docs.claude.com/en/release-notes/system-prompts"""
+
+    """
+    What is a System Prompt? 
+    
+    The set of overarching instructions that the model sees before the start of
+    any conversation. These instructions help define the model's behavior, personality,
+    and guidelines for generating responses. System prompts are crucial for tailoring
+    the model's output to specific use cases or desired interaction styles.
+    """
     
     def __init__(self, api_key=None, model="claude-sonnet-4-20250514"):
         try:
@@ -100,6 +110,16 @@ class AnthropicProvider(ChatProvider):
 
 class OllamaProvider(ChatProvider):
     """Ollama provider for local models"""
+    """System Prompt: https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/"""
+
+    """
+    What is a System Prompt? 
+    
+    The set of overarching instructions that the model sees before the start of
+    any conversation. These instructions help define the model's behavior, personality,
+    and guidelines for generating responses. System prompts are crucial for tailoring
+    the model's output to specific use cases or desired interaction styles.
+    """
     
     def __init__(self, model="llama2", base_url="http://localhost:11434"):
         try:
@@ -139,6 +159,16 @@ class OllamaProvider(ChatProvider):
 
 class xAIGrokProvider(ChatProvider):
     """xAI Grok API provider"""
+    """System Prompt: hhttps://github.com/xai-org/grok-prompts/blob/main/grok4_system_turn_prompt_v8.j2"""
+
+    """
+    What is a System Prompt? 
+    
+    The set of overarching instructions that the model sees before the start of
+    any conversation. These instructions help define the model's behavior, personality,
+    and guidelines for generating responses. System prompts are crucial for tailoring
+    the model's output to specific use cases or desired interaction styles.
+    """
     
     def __init__(self, api_key=None, model="grok-4", base_url="https://api.x.ai/v1"):
         try:
