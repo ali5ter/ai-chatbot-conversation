@@ -274,3 +274,79 @@ class xAIGrokProvider(ChatProvider):
             max_tokens=tokens
         )
         return response.choices[0].message.content
+    
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# Add this class to your providers.py file
+
+class GeminiProvider(ChatProvider):
+    """Google Gemini API provider"""
+    
+    def __init__(self, api_key=None, model="gemini-1.5-flash", temperature=None, max_tokens=None):
+        super().__init__()
+
+        try:
+            import google.generativeai as genai
+            self.genai = genai
+        except ImportError:
+            raise ImportError("Google Generative AI package not installed. Run: pip install google-generativeai")
+        
+        self.api_key = api_key or os.environ.get("GEMINI_API_KEY")
+        if not self.api_key:
+            raise ValueError(
+                "Gemini API key not found. Set GEMINI_API_KEY environment variable or pass api_key parameter.\n"
+                "Get your API key at: https://makersuite.google.com/app/apikey"
+            )
+        
+        # Configure the API
+        self.genai.configure(api_key=self.api_key)
+        self.model_name = model
+        
+        # Provider-specific defaults from environment or use base class defaults
+        self.default_temperature = temperature if temperature is not None else float(
+            os.environ.get("GEMINI_TEMPERATURE", self.default_temperature)
+        )
+        self.default_max_tokens = max_tokens if max_tokens is not None else int(
+            os.environ.get("GEMINI_MAX_TOKENS", self.default_max_tokens)
+        )
+        
+        print(f"Gemini Provider initialized with model: {model}")
+        print(f"  Default temperature: {self.default_temperature}")
+        print(f"  Default max_tokens: {self.default_max_tokens}")
+    
+    def get_response(self, system_prompt, messages, temperature=None, max_tokens=None):
+        # Use provided values or fall back to provider defaults
+        temp = temperature if temperature is not None else self.default_temperature
+        tokens = max_tokens if max_tokens is not None else self.default_max_tokens
+        
+        # Configure generation settings
+        generation_config = {
+            "temperature": temp,
+            "max_output_tokens": tokens,
+        }
+        
+        # Create model with system instruction
+        model = self.genai.GenerativeModel(
+            model_name=self.model_name,
+            generation_config=generation_config,
+            system_instruction=system_prompt
+        )
+        
+        # Convert messages to Gemini format
+        # Gemini expects history as a list of Content objects
+        history = []
+        for msg in messages[:-1]:  # All but the last message
+            role = "user" if msg["role"] == "user" else "model"
+            history.append({
+                "role": role,
+                "parts": [msg["content"]]
+            })
+        
+        # Start chat with history
+        chat = model.start_chat(history=history)
+        
+        # Send the last message
+        last_message = messages[-1]["content"] if messages else ""
+        response = chat.send_message(last_message)
+        
+        return response.text

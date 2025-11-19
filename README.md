@@ -4,7 +4,7 @@ A Python framework for enabling conversations between two AI chatbots. Supports 
 
 ## Features
 
-- **Multiple AI Providers**: OpenAI ChatGPT, Anthropic Claude, xAI Grok, and Ollama (local models)
+- **Multiple AI Providers**: OpenAI ChatGPT, Anthropic Claude, xAI Grok, Google Gemini, and Ollama (local models)
 - **Mix and Match**: Have different AI models debate each other (e.g., GPT-4 vs Claude)
 - **Flexible Configuration**: Customize system prompts, turn counts, and conversation parameters
 - **Conversation Logging**: Save conversations to text files for later analysis
@@ -67,6 +67,9 @@ DEFAULT_MAX_TOKENS=1500
 
 # XAI_TEMPERATURE=0.7
 # XAI_MAX_TOKENS=1500
+
+# GEMINI_TEMPERATURE=0.7
+# GEMINI_MAX_TOKENS=1500
 ```
 
 ## Getting API Keys
@@ -133,6 +136,19 @@ DEFAULT_MAX_TOKENS=1500
 3. **Generate API Key**
    - Click "Create" to create your first API key
    - **Important**: Copy the key immediately - it won't be shown again!
+   - Store it securely
+
+### Google AI API key
+
+1. **Log into Google AI Studio**
+   - Navigate to the [Google AI Sudio Keys page](https://makersuite.google.com/app/apikey)
+   - Accept the agreements, and if nessesary provide your Google credentials.
+
+2. **Generate API Key**
+   - Click "Create API key" to create your API key
+   - Give it a name (e.g., "chatbot-conversation")
+   - Choose a project, e.g. 'Default Gemini Project'
+   - You may need to 'set up billing' for this Project
    - Store it securely
 
 ### Security Best Practices
@@ -217,6 +233,13 @@ provider = AnthropicProvider(model="claude-sonnet-4-20250514")
 ```python
 from providers import xAIGrokProvider
 provider = xAIGrokProvider(model="grok-4")
+```
+
+### Google Gemini
+
+```python
+from providers import GeminiProvider
+provider = GeminiProvider(model="gemini-1.5-flash")
 ```
 
 ### Ollama (Local Models)
@@ -382,4 +405,5 @@ Built with support from:
 - OpenAI API
 - Anthropic Claude API
 - xAI API
+- Gemini AI API
 - Ollama for local model support

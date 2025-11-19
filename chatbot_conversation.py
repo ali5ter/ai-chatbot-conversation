@@ -152,7 +152,7 @@ class ChatbotConversation:
 
         with path.open('w', encoding='utf-8') as f:
             for entry in self.conversation_history:
-                f.write(f"\n{entry['emoji']} {entry['speaker']}\n\n")
+                f.write(f"{entry['emoji']} {entry['speaker']}\n")
                 f.write(f"{entry['message']}\n\n")
 
         print(f"\nConversation saved to {path}")
