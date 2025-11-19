@@ -1,6 +1,6 @@
 # 🤖 AI Chatbot Conversation
 
-A Python framework for enabling conversations between two AI chatbots. Supports multiple AI providers including OpenAI, Anthropic Claude, and local models via Ollama.
+A Python framework for enabling conversations between two AI chatbots. Supports multiple AI providers including OpenAI, and Anthropic Claude.
 
 ## Features
 
@@ -68,8 +68,8 @@ DEFAULT_MAX_TOKENS=1500
 # XAI_TEMPERATURE=0.7
 # XAI_MAX_TOKENS=1500
 
-# GEMINI_TEMPERATURE=0.7
-# GEMINI_MAX_TOKENS=1500
+# GOOGLE_TEMPERATURE=0.7
+# GOOGLE_MAX_TOKENS=1500
 ```
 
 ## Getting API Keys
@@ -238,8 +238,8 @@ provider = xAIGrokProvider(model="grok-4")
 ### Google Gemini
 
 ```python
-from providers import GeminiProvider
-provider = GeminiProvider(model="gemini-1.5-flash")
+from providers import GoogleProvider
+provider = GoogleProvider(model="gemini-1.5-flash")
 ```
 
 ### Ollama (Local Models)
@@ -309,8 +309,6 @@ The [perform.py](perform.py) script can perform the resulting output file genera
 1. **macOS TTS (`say`)** – Fastest, zero delay, works offline  
 2. **OpenAI Live TTS** – Streams each message and plays it immediately  
 3. **OpenAI MP3 Mode** – Generates a *single final MP3* combining the whole performance
-
----
 
 ### 1. Setup
 

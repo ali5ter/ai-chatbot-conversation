@@ -274,12 +274,8 @@ class xAIGrokProvider(ChatProvider):
             max_tokens=tokens
         )
         return response.choices[0].message.content
-    
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Add this class to your providers.py file
 
-class GeminiProvider(ChatProvider):
+class GoogleProvider(ChatProvider):
     """Google Gemini API provider"""
     
     def __init__(self, api_key=None, model="gemini-1.5-flash", temperature=None, max_tokens=None):

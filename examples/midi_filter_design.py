@@ -11,14 +11,14 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv()
 
-from providers import AnthropicProvider, GeminiProvider
+from providers import AnthropicProvider, GoogleProvider
 from chatbot_conversation import ChatbotConversation
 
 def main():
     print("\nGEMINI AND CLAUDE DESIGN A MIDI-CONTROLLED FILTER\n\n")
     print("Two AI systems tackle a technical DIY electronics project combining analog synthesis and digital control.")
     
-    gemini = GeminiProvider(model="gemini-1.5-flash")
+    google = GoogleProvider(model="gemini-1.5-flash")
     anthropic = AnthropicProvider(model="claude-sonnet-4-20250514")
     
     role = """You are an experienced electronics engineer and DIY maker who specializes in synthesizer design. 
@@ -26,8 +26,8 @@ You provide practical, buildable advice that balances technical accuracy with ma
 You understand eurorack standards, analog circuit design, and microcontroller integration.
 You should critique and build upon the other AI's suggestions, pointing out practical issues or improvements."""
     
-    gemini_role = role + " You are Gemini, Google's AI assistant."
-    claude_role = role + " You are Claude, Anthropic's AI assistant."
+    gemini = role + " You are Gemini, Google's AI assistant."
+    claude = role + " You are Claude, Anthropic's AI assistant."
     
     initial_prompt = """I want to build a DIY eurorack-compatible voltage-controlled filter module that can be controlled via MIDI. 
 
@@ -51,12 +51,12 @@ Please keep it practical and achievable for someone at my skill level. I want to
 Gemini, please start by proposing an initial design approach, then Claude can critique and suggest alternatives."""
 
     conv = ChatbotConversation(
-        provider1=gemini,
-        chatbot1_role=gemini_role,
+        provider1=google,
+        chatbot1_role=gemini,
         chatbot1_name="Gemini",
         chatbot1_emoji="💎",
         provider2=anthropic,
-        chatbot2_role=claude_role,
+        chatbot2_role=claude,
         chatbot2_name="Claude",
         chatbot2_emoji="🧠"
     )
