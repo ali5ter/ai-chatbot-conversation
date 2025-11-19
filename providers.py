@@ -116,6 +116,9 @@ class AnthropicProvider(ChatProvider):
                 "Get your API key at: https://console.anthropic.com/settings/keys"
             )
         
+        self.client = anthropic.Anthropic(api_key=self.api_key)
+        self.model = model
+
         # Provider-specific defaults from environment or use base class defaults
         self.default_temperature = temperature if temperature is not None else float(
             os.environ.get("ANTHROPIC_TEMPERATURE", self.default_temperature)
@@ -278,7 +281,7 @@ class xAIGrokProvider(ChatProvider):
 class GoogleProvider(ChatProvider):
     """Google Gemini API provider"""
     
-    def __init__(self, api_key=None, model="gemini-1.5-flash", temperature=None, max_tokens=None):
+    def __init__(self, api_key=None, model="gemini-2.5-flash", temperature=None, max_tokens=None):
         super().__init__()
 
         try:
@@ -296,7 +299,13 @@ class GoogleProvider(ChatProvider):
         
         # Configure the API
         self.genai.configure(api_key=self.api_key)
-        self.model_name = model
+
+        # Use base model name without 'models/' prefix
+        # The API will handle the proper formatting
+        if model.startswith('models/'):
+            self.model_name = model.replace('models/', '')
+        else:
+            self.model_name = model
         
         # Provider-specific defaults from environment or use base class defaults
         self.default_temperature = temperature if temperature is not None else float(
@@ -315,16 +324,37 @@ class GoogleProvider(ChatProvider):
         temp = temperature if temperature is not None else self.default_temperature
         tokens = max_tokens if max_tokens is not None else self.default_max_tokens
         
-        # Configure generation settings
+        # Configure generation settings with safety settings
         generation_config = {
             "temperature": temp,
             "max_output_tokens": tokens,
         }
         
+        # Relax safety settings to reduce blocking
+        safety_settings = [
+            {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "threshold": "BLOCK_ONLY_HIGH"
+            },
+            {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "threshold": "BLOCK_ONLY_HIGH"
+            },
+            {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "threshold": "BLOCK_ONLY_HIGH"
+            },
+            {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_ONLY_HIGH"
+            },
+        ]
+        
         # Create model with system instruction
         model = self.genai.GenerativeModel(
             model_name=self.model_name,
             generation_config=generation_config,
+            safety_settings=safety_settings,
             system_instruction=system_prompt
         )
         
@@ -345,4 +375,44 @@ class GoogleProvider(ChatProvider):
         last_message = messages[-1]["content"] if messages else ""
         response = chat.send_message(last_message)
         
-        return response.text
+        # Handle different response scenarios
+        try:
+            # Try to get text normally
+            return response.text
+        except ValueError as e:
+            # Response was blocked or empty
+            if hasattr(response, 'prompt_feedback'):
+                # Check if prompt was blocked
+                feedback = response.prompt_feedback
+                if hasattr(feedback, 'block_reason'):
+                    return f"[Response blocked by safety filter: {feedback.block_reason}]"
+            
+            # Check candidates for finish reason
+            if response.candidates:
+                candidate = response.candidates[0]
+                finish_reason = candidate.finish_reason
+                
+                # Map finish reasons to user-friendly messages
+                reasons = {
+                    1: "STOP - completed normally",
+                    2: "SAFETY - content filtered",
+                    3: "RECITATION - too similar to training data",
+                    4: "MAX_TOKENS - reached token limit",
+                    5: "OTHER - unknown reason"
+                }
+                
+                reason_text = reasons.get(finish_reason, f"Unknown reason: {finish_reason}")
+                
+                # Try to get partial content if available
+                if hasattr(candidate, 'content') and candidate.content.parts:
+                    try:
+                        partial = "".join([part.text for part in candidate.content.parts if hasattr(part, 'text')])
+                        if partial:
+                            return f"{partial}\n\n[Response may be incomplete - finish reason: {reason_text}]"
+                    except:
+                        pass
+                
+                return f"[Response blocked - {reason_text}]"
+            
+            # Fallback error message
+            return f"[Error generating response: {str(e)}]"
