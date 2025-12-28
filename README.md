@@ -294,6 +294,126 @@ Customize conversations with these parameters:
 - `delay`: Seconds between API calls (to avoid rate limits)
 - `verbose`: Whether to print conversation to console
 
+## Enhanced Console Display with Rich
+
+The framework supports enhanced console output using the [Rich library](https://rich.readthedocs.io/), providing a more aesthetically pleasing and engaging experience when watching conversations unfold.
+
+### Features
+
+When Rich display is enabled, you get:
+
+- **Panels with Borders**: Each response appears in a styled panel with colored borders and the chatbot's name/emoji in the title
+- **Markdown Rendering**: AI responses are rendered as Markdown (supports **bold**, `code`, lists, headers, etc.) for better readability
+- **Progress Indicators**: Spinners show while waiting for API responses with elapsed time
+- **Typing Animation**: Responses appear character-by-character, creating an engaging "live" feel
+
+### Installation
+
+Rich is an optional dependency. Install it with:
+
+```bash
+pip install rich
+# OR install all dependencies including Rich
+pip install -r requirements.txt
+```
+
+### Basic Usage
+
+Enable Rich display by setting `use_rich_display=True`:
+
+```python
+from providers import OpenAIProvider, AnthropicProvider
+from chatbot_conversation import ChatbotConversation
+
+provider1 = OpenAIProvider(model="gpt-4o-mini")
+provider2 = AnthropicProvider(model="claude-sonnet-4-20250514")
+
+conv = ChatbotConversation(
+    provider1=provider1,
+    chatbot1_role="You are a policy expert...",
+    chatbot1_name="Policy Expert",
+    chatbot1_emoji="📋",
+    provider2=provider2,
+    chatbot2_role="You are an ethics researcher...",
+    chatbot2_name="Ethics Researcher",
+    chatbot2_emoji="🔬",
+    use_rich_display=True  # Enable Rich features
+)
+
+conv.run_conversation(
+    initial_prompt="Discuss AI ethics in education...",
+    num_turns=3,
+    stream_effect=True,    # Enable typing animation
+    typing_speed=120       # Characters per second
+)
+```
+
+### Rich Display Parameters
+
+Additional parameters available when using Rich:
+
+- `use_rich_display` (bool, default: `False`): Enable Rich library features
+- `stream_effect` (bool, default: `True`): Enable typing animation effect
+- `typing_speed` (int, default: `100`): Characters per second for typing effect
+
+### How It Works
+
+The typing animation is a **simulated streaming effect** that works with the existing blocking API calls:
+
+1. API call executes and blocks until complete response received
+2. During the wait, a progress spinner is displayed
+3. Once the response arrives, it animates character-by-character
+4. Result: Visually engaging display without modifying provider APIs
+
+### Visual Comparison
+
+**Without Rich (default):**
+```
+🤔 INITIAL PROMPT
+
+Discuss AI ethics...
+
+
+🔬 ETHICS RESEARCHER
+
+This is an important topic. AI detection has several concerns:
+- Privacy implications
+- False positives
+```
+
+**With Rich enabled:**
+```
+┌─────────────────── 🤔 INITIAL PROMPT ────────────────────┐
+│                                                           │
+│  Discuss AI ethics...                                    │
+│                                                           │
+└───────────────────────────────────────────────────────────┘
+
+⠋ Waiting for Ethics Researcher response...
+
+┌──────────────── 🔬 ETHICS RESEARCHER ─────────────────────┐
+│                                                           │
+│  This is an important topic. AI detection has several    │
+│  concerns:                                               │
+│                                                           │
+│  • Privacy implications                                  │
+│  • False positives                                       │
+│                                                           │
+└───────────────────────────────────────────────────────────┘
+```
+*(with typing animation and markdown rendering)*
+
+### Example
+
+See `examples/rich_display_example.py` for a complete working example.
+
+### Backward Compatibility
+
+- Rich display is **opt-in** (disabled by default)
+- Existing code works without any changes
+- File output format remains unchanged (plain text)
+- Rich library is optional - gracefully falls back to simple display if not installed
+
 ## Use Cases
 
 - **Research**: Study how different AI models approach the same problem

@@ -7,16 +7,18 @@
 import time
 from pathlib import Path
 from providers import ChatProvider
+from rich_display import create_display_manager
 
 class ChatbotConversation:
     """Manages conversations between two chatbots using different providers"""
     
-    def __init__(self, 
+    def __init__(self,
                  provider1, chatbot1_role, chatbot1_name="Chatbot 1", chatbot1_emoji="🤖",
-                 provider2=None, chatbot2_role="User", chatbot2_name="Chatbot 2", chatbot2_emoji="👾"):
+                 provider2=None, chatbot2_role="User", chatbot2_name="Chatbot 2", chatbot2_emoji="👾",
+                 use_rich_display=False):
         """
         Initialize the chatbot conversation system.
-        
+
         Args:
             provider1: ChatProvider instance for first chatbot
             chatbot1_role: Role for first chatbot
@@ -26,12 +28,13 @@ class ChatbotConversation:
             chatbot2_role: Role for second chatbot
             chatbot2_name: Name identifier for second chatbot
             chatbot2_emoji: Emoji identifier for second chatbot
+            use_rich_display: Enable Rich library features (panels, markdown, progress indicators)
         """
         if not isinstance(provider1, ChatProvider):
             raise TypeError("provider1 must be an instance of ChatProvider")
         if provider2 is not None and not isinstance(provider2, ChatProvider):
             raise TypeError("provider2 must be an instance of ChatProvider")
-            
+
         self.provider1 = provider1
         self.chatbot1_role = chatbot1_role
         self.chatbot1_name = chatbot1_name
@@ -41,6 +44,10 @@ class ChatbotConversation:
         self.chatbot2_name = chatbot2_name
         self.chatbot2_emoji = chatbot2_emoji
         self.conversation_history = []
+
+        # Initialize display manager
+        self.use_rich_display = use_rich_display
+        self.display_manager = create_display_manager(use_rich_display)
         
     def get_chatbot_response(self, provider, chatbot_name, system_prompt, messages):
         """
@@ -60,29 +67,32 @@ class ChatbotConversation:
         except Exception as e:
             return f"Error getting response from {chatbot_name}: {str(e)}"
     
-    def run_conversation(self, 
+    def run_conversation(self,
             initial_prompt,
             num_turns=5,
             delay=1,
-            verbose=True):
+            verbose=True,
+            stream_effect=True,
+            typing_speed=100):
         """
         Run a conversation between two chatbots.
-        
+
         Args:
             initial_prompt: The starting prompt for the conversation
             num_turns: Number of back-and-forth exchanges
             delay: Delay in seconds between API calls
             verbose: Print conversation to console
-            
+            stream_effect: Enable typing animation (only with use_rich_display=True)
+            typing_speed: Characters per second for typing effect (default: 100)
+
         Returns:
             List of conversation turns with metadata
         """
         messages = []
         conversation_log = []
-        
+
         if verbose:
-            print(f"\n\n🤔 INITIAL PROMPT\n")
-            print(f"{initial_prompt}\n")
+            self.display_manager.display_initial_prompt(initial_prompt)
         
         # Add initial prompt as if it came from chatbot 1
         messages.append({"role": "assistant", "content": initial_prompt})
@@ -96,10 +106,7 @@ class ChatbotConversation:
         for turn in range(num_turns):
             # Chatbot 2 responds
             time.sleep(delay)
-            if verbose:
-                print(f"\n\n{self.chatbot2_emoji} {self.chatbot2_name.upper()}")
-                print()
-            
+
             # For chatbot 2, reverse the roles (assistant becomes user)
             reversed_messages = []
             for msg in messages:
@@ -107,12 +114,26 @@ class ChatbotConversation:
                     "role": "user" if msg["role"] == "assistant" else "assistant",
                     "content": msg["content"]
                 })
-            
-            response2 = self.get_chatbot_response(
-                self.provider2, self.chatbot2_name, self.chatbot2_role, reversed_messages
-            )
+
+            # Get response with optional progress indicator
             if verbose:
-                print(response2)
+                with self.display_manager.api_progress(self.chatbot2_name):
+                    response2 = self.get_chatbot_response(
+                        self.provider2, self.chatbot2_name, self.chatbot2_role, reversed_messages
+                    )
+            else:
+                response2 = self.get_chatbot_response(
+                    self.provider2, self.chatbot2_name, self.chatbot2_role, reversed_messages
+                )
+
+            if verbose:
+                self.display_manager.display_response(
+                    response2,
+                    self.chatbot2_name,
+                    self.chatbot2_emoji,
+                    stream_effect=stream_effect and self.use_rich_display,
+                    chars_per_second=typing_speed
+                )
             
             messages.append({"role": "user", "content": response2})
             conversation_log.append({
@@ -124,15 +145,26 @@ class ChatbotConversation:
             
             # Chatbot 1 responds
             time.sleep(delay)
+
+            # Get response with optional progress indicator
             if verbose:
-                print(f"\n\n{self.chatbot1_emoji} {self.chatbot1_name.upper()}")
-                print()
-            
-            response1 = self.get_chatbot_response(
-                self.provider1, self.chatbot1_name, self.chatbot1_role, messages)
+                with self.display_manager.api_progress(self.chatbot1_name):
+                    response1 = self.get_chatbot_response(
+                        self.provider1, self.chatbot1_name, self.chatbot1_role, messages
+                    )
+            else:
+                response1 = self.get_chatbot_response(
+                    self.provider1, self.chatbot1_name, self.chatbot1_role, messages
+                )
+
             if verbose:
-                print(response1)
-                print()
+                self.display_manager.display_response(
+                    response1,
+                    self.chatbot1_name,
+                    self.chatbot1_emoji,
+                    stream_effect=stream_effect and self.use_rich_display,
+                    chars_per_second=typing_speed
+                )
             
             messages.append({"role": "assistant", "content": response1})
             conversation_log.append({
