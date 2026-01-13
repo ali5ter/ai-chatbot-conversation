@@ -1,3 +1,5 @@
+> **⚠️ Archived 2026-01-13. No longer maintained.**
+
 # 🤖 AI Chatbot Conversation
 
 A Python framework for enabling conversations between two AI chatbots. Supports multiple AI providers including OpenAI, and Anthropic Claude.
